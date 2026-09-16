@@ -1,0 +1,62 @@
+@use 'app/design/tokens';
+@use 'app/design/typography' as type;
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--color-calc);
+  color: var(--color-ink);
+  @include type.body;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+a {
+  color: var(--color-blau);
+}
+
+// MapLibre markers are created outside Angular's view, so component style
+// encapsulation can't reach them — they live here instead.
+.map-pin {
+  position: relative;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--color-terracota);
+    border: 1.5px solid var(--color-ink);
+    border-radius: 50% 50% 50% 0;
+    transform: rotate(45deg);
+    transition: transform var(--dur-base) var(--ease-pop);
+  }
+
+  &:hover::before {
+    transform: rotate(45deg) scale(1.15);
+  }
+}

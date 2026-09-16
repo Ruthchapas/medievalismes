@@ -1,0 +1,32 @@
+@use 'app/design/typography' as type;
+
+.h2 {
+  @include type.heading-2;
+  margin: 0 0 var(--space-4);
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+
+  app-place-icon {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+  }
+
+  span {
+    @include type.body;
+    font-size: var(--fs-body-sm);
+  }
+}

@@ -1,0 +1,44 @@
+@use 'app/design/typography' as type;
+
+:host {
+  @include type.eyebrow;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-3) var(--space-5);
+  border: 1.5px solid var(--color-ink);
+  cursor: pointer;
+  background: transparent;
+  color: var(--color-ink);
+  transition:
+    background var(--dur-base) var(--ease-soft),
+    color var(--dur-base) var(--ease-soft),
+    opacity var(--dur-micro) var(--ease-soft);
+}
+
+:host(:active) {
+  opacity: 0.75;
+}
+
+:host(.primary) {
+  background: var(--color-terracota);
+  border-color: var(--color-terracota);
+  color: var(--color-calc);
+}
+
+:host(.secondary) {
+  background: transparent;
+  border-color: var(--color-ink);
+  color: var(--color-ink);
+}
+
+:host(.link) {
+  @include type.body-sm;
+  border: none;
+  padding: 0;
+  text-decoration: underline;
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--color-blau);
+  background: none;
+}

@@ -1,0 +1,8 @@
+@if (photos().length) {
+  <h2 class="h2">Galeria</h2>
+  <div class="row">
+    @for (photo of photos(); track $index) {
+      <div class="thumb" [style]="thumbStyle(photo, $index)"></div>
+    }
+  </div>
+}

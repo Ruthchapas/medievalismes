@@ -1,0 +1,58 @@
+// Medievalismes — design tokens
+// Mirrors the FASE 1 system: palette, type scale, spacing and motion.
+// Exposed as CSS custom properties so they cross component style boundaries.
+
+:root {
+  // Color
+  --color-calc: #f2ead9;
+  --color-ink: #3b281e;
+  --color-ink-dim: #8b7f6d;
+  --color-border: #d9cbaf;
+  --color-terracota: #c1602b;
+  --color-blau: #2c5f73;
+  --color-oliva: #6b7a45;
+  --color-groc: #d9a441;
+
+  // Type
+  --font-display: 'Fraunces', serif;
+  --font-body: 'Lora', serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+  --font-blackletter: 'UnifrakturMaguntia', cursive;
+
+  --fs-display: clamp(2.75rem, 7vw, 4.5rem);
+  --fs-h1: 2rem;
+  --fs-h2: 1.4rem;
+  --fs-h3: 1.1rem;
+  --fs-body: 1rem;
+  --fs-body-sm: 0.875rem;
+  --fs-meta: 0.78rem;
+  --fs-eyebrow: 0.68rem;
+
+  // Spacing (8-step scale)
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+
+  // Motion
+  --dur-micro: 150ms;
+  --dur-base: 260ms;
+  --dur-screen: 380ms;
+  --ease-soft: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-pop: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

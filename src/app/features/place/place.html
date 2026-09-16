@@ -1,0 +1,22 @@
+@if (place(); as p) {
+  <article class="fitxa">
+    <app-place-header [place]="p" [saved]="saved()" (savedChange)="saved.set($event)" />
+
+    <div class="body">
+      <p class="intro">{{ p.introText }}</p>
+
+      <p class="eyebrow-sm">El relat</p>
+      <p class="context">{{ p.contextText }}</p>
+
+      <app-place-highlights [highlights]="p.highlights" />
+      <app-place-gallery [photos]="p.gallery" />
+      <app-place-nearby [nearby]="p.nearby" />
+    </div>
+  </article>
+} @else {
+  <main class="not-found">
+    <a routerLink="/mapa" class="back">‹ Mapa</a>
+    <p class="eyebrow">Fitxa no trobada</p>
+    <h1 class="title">Encara no hi ha contingut per a aquest lloc</h1>
+  </main>
+}

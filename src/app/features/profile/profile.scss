@@ -1,0 +1,17 @@
+@use 'app/design/layout';
+@use 'app/design/typography' as type;
+
+.screen {
+  @include layout.screen;
+}
+.eyebrow {
+  @include layout.screen-eyebrow;
+}
+.title {
+  @include layout.screen-title;
+}
+.placeholder {
+  @include type.body;
+  max-width: 42ch;
+  color: var(--color-ink-dim);
+}

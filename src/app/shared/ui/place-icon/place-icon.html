@@ -1,0 +1,29 @@
+@switch (type()) {
+  @case ('castell') {
+    <svg viewBox="0 0 24 24">
+      <g fill="none" stroke-linejoin="round">
+        <rect x="7" y="10" width="10" height="11" fill="var(--color-terracota)" />
+        <polygon points="7,10 12,4 17,10" fill="var(--color-groc)" />
+        <rect x="10.5" y="15" width="3" height="6" fill="var(--color-ink)" />
+      </g>
+    </svg>
+  }
+  @case ('esglesia') {
+    <svg viewBox="0 0 24 24">
+      <path d="M6,21V12L12,6L18,12V21Z" fill="var(--color-terracota)" />
+      <line x1="12" y1="2" x2="12" y2="6" />
+      <line x1="10" y1="4" x2="14" y2="4" />
+    </svg>
+  }
+  @case ('mirador') {
+    <svg viewBox="0 0 24 24">
+      <path d="M3,20 L9,8 L13,14 L16,9 L21,20 Z" fill="var(--color-oliva)" />
+      <circle cx="17" cy="6" r="2" fill="var(--color-groc)" />
+    </svg>
+  }
+  @case ('sender') {
+    <svg viewBox="0 0 24 24">
+      <path d="M3,18 Q9,10 12,14 T21,8" fill="none" stroke-dasharray="1 4" />
+    </svg>
+  }
+}

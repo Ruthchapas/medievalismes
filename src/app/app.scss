@@ -1,0 +1,40 @@
+.floating-nav {
+  position: fixed;
+  left: 50%;
+  bottom: var(--space-5);
+  transform: translateX(-50%);
+  display: flex;
+  gap: var(--space-5);
+  padding: var(--space-3) var(--space-6);
+  background: var(--color-calc);
+  border: 1px solid var(--color-ink);
+  border-radius: 100px;
+  box-shadow: 0 12px 28px rgba(59, 40, 30, 0.18);
+  z-index: 10;
+}
+
+.fi {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+
+  svg {
+    width: 20px;
+    height: 20px;
+
+    path,
+    line {
+      stroke: var(--color-ink);
+      transition: stroke var(--dur-micro) var(--ease-soft);
+    }
+  }
+
+  &.active svg {
+    path,
+    line {
+      stroke: var(--color-terracota);
+    }
+  }
+}

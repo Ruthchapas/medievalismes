@@ -1,0 +1,20 @@
+@use 'app/design/typography' as type;
+
+// Every top-level screen shares this padding; the extra bottom space keeps
+// content clear of the floating pill nav on Mapa/Descobreix/Desats.
+@mixin screen {
+  display: block;
+  min-height: 100dvh;
+  padding: var(--space-6) var(--space-5) calc(var(--space-9) + 64px);
+}
+
+@mixin screen-eyebrow {
+  @include type.eyebrow;
+  color: var(--color-terracota);
+  margin: 0 0 var(--space-4);
+}
+
+@mixin screen-title {
+  @include type.display;
+  margin: 0 0 var(--space-6);
+}

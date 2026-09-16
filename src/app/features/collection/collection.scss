@@ -1,0 +1,25 @@
+@use 'app/design/layout';
+@use 'app/design/typography' as type;
+
+.screen {
+  @include layout.screen;
+  padding-top: var(--space-6);
+}
+.back {
+  @include type.meta;
+  display: inline-block;
+  color: var(--color-ink-dim);
+  margin-bottom: var(--space-5);
+}
+.eyebrow {
+  @include layout.screen-eyebrow;
+}
+.title {
+  @include layout.screen-title;
+  text-transform: capitalize;
+}
+.placeholder {
+  @include type.body;
+  max-width: 42ch;
+  color: var(--color-ink-dim);
+}

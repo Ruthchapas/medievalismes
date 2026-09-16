@@ -1,0 +1,49 @@
+<a routerLink="/mapa" class="back" aria-label="Torna al mapa">‹</a>
+
+<div class="actions">
+  <button
+    type="button"
+    class="action-btn"
+    [class.saved]="saved()"
+    (click)="toggleSaved()"
+    [attr.aria-pressed]="saved()"
+    aria-label="Desa aquest lloc"
+  >
+    <svg viewBox="0 0 24 24"><path d="M6,4 H18 V21 L12,16 L6,21 Z" /></svg>
+  </button>
+  <button type="button" class="action-btn" aria-label="Comparteix">
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M12,15 V4 M8,8 L12,4 L16,8" />
+      <path d="M5,13 V19 H19 V13" />
+    </svg>
+  </button>
+</div>
+
+<div class="photo" [style]="photoStyle()" [class.has-photo]="place().photoUrl">
+  @if (place().routeTag) {
+    <span class="route-tag">{{ place().routeTag }}</span>
+  }
+  <svg class="ornament" viewBox="0 0 400 70" preserveAspectRatio="none">
+    <defs>
+      <filter [attr.id]="filterId" x="-20%" y="-20%" width="140%" height="140%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" result="n" />
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="5" />
+        <feGaussianBlur stdDeviation="1.4" />
+      </filter>
+    </defs>
+    <g [attr.filter]="'url(#' + filterId + ')'" opacity="0.9">
+      <path d="M0,60 Q100,40 200,55 T400,45 V70 H0 Z" fill="var(--color-oliva)" opacity="0.55" />
+      <ellipse cx="60" cy="50" rx="9" ry="4" fill="var(--color-oliva)" opacity="0.6" transform="rotate(-20 60 50)" />
+      <ellipse cx="140" cy="42" rx="9" ry="4" fill="var(--color-oliva)" opacity="0.6" transform="rotate(15 140 42)" />
+      <ellipse cx="260" cy="48" rx="9" ry="4" fill="var(--color-oliva)" opacity="0.6" transform="rotate(-15 260 48)" />
+      <ellipse cx="330" cy="40" rx="9" ry="4" fill="var(--color-oliva)" opacity="0.6" transform="rotate(20 330 40)" />
+      <ellipse cx="200" cy="58" rx="18" ry="9" fill="var(--color-terracota)" opacity="0.55" />
+    </g>
+  </svg>
+  <h1 class="name">{{ place().name }}</h1>
+</div>
+
+<p class="meta">
+  {{ place().name | uppercase }} · {{ place().comarca | uppercase }} · {{ place().altitud }}M ·
+  {{ place().habitants }} HAB.
+</p>

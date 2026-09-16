@@ -1,0 +1,50 @@
+@use 'app/design/layout';
+@use 'app/design/typography' as type;
+
+.fitxa {
+  display: block;
+  padding-bottom: var(--space-8);
+}
+
+.body {
+  padding: var(--space-5) var(--space-4) 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.intro,
+.context {
+  @include type.body;
+  margin: 0;
+}
+
+.context {
+  font-size: var(--fs-body-sm);
+  font-style: italic;
+  opacity: 0.85;
+  margin-top: calc(var(--space-2) * -1);
+}
+
+.eyebrow-sm {
+  @include type.eyebrow;
+  color: var(--color-oliva);
+  margin: calc(var(--space-4) * -1) 0 0;
+}
+
+.not-found {
+  @include layout.screen;
+}
+.not-found .back {
+  @include type.meta;
+  display: inline-block;
+  color: var(--color-ink-dim);
+  margin-bottom: var(--space-5);
+}
+.not-found .eyebrow {
+  @include layout.screen-eyebrow;
+}
+.not-found .title {
+  @include type.heading-1;
+  max-width: 20ch;
+}

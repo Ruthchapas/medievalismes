@@ -1,0 +1,23 @@
+<router-outlet />
+
+@if (showFloatingNav()) {
+  <nav class="floating-nav" aria-label="Navegació principal">
+    <a routerLink="/mapa" routerLinkActive="active" class="fi" aria-label="Mapa">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6">
+        <path d="M3,20 L9,8 L13,14 L16,9 L21,20 Z" />
+      </svg>
+    </a>
+    <a routerLink="/descobreix" routerLinkActive="active" class="fi" aria-label="Descobreix">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6">
+        <line x1="4" y1="7" x2="20" y2="7" />
+        <line x1="4" y1="12" x2="20" y2="12" />
+        <line x1="4" y1="17" x2="14" y2="17" />
+      </svg>
+    </a>
+    <a routerLink="/desats" routerLinkActive="active" class="fi" aria-label="Desats">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6">
+        <path d="M6,4 H18 V21 L12,16 L6,21 Z" />
+      </svg>
+    </a>
+  </nav>
+}

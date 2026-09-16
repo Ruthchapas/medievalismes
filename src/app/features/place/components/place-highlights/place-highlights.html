@@ -1,0 +1,9 @@
+<h2 class="h2">Punts destacats</h2>
+<ul class="list">
+  @for (item of highlights(); track item.label) {
+    <li class="item">
+      <app-place-icon [type]="item.icon" />
+      <span>{{ item.label }}</span>
+    </li>
+  }
+</ul>
