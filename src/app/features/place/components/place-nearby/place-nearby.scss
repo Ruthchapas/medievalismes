@@ -5,13 +5,22 @@
   margin: 0 0 var(--space-3);
 }
 
-.mini-map {
-  position: relative;
-  display: block;
-  height: clamp(190px, 32vw, 280px);
-  border: 1px solid var(--color-ink);
+// The whole block is the tap target — no map is drawn here, just the way into it.
+.map-link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  min-height: 80px;
+  padding: var(--space-3) var(--space-4);
   margin-bottom: var(--space-3);
-  overflow: hidden;
+  background: var(--color-calc);
+  border: 1px solid var(--color-ink);
+  color: var(--color-ink);
+  text-decoration: none;
+
+  &:active {
+    background: color-mix(in srgb, var(--color-ink) 8%, var(--color-calc));
+  }
 
   &:focus-visible {
     outline: 2px solid var(--color-blau);
@@ -19,27 +28,41 @@
   }
 }
 
-.mini-map__canvas {
-  position: absolute;
-  inset: 0;
+.map-link__pin {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  fill: var(--color-terracota);
+  stroke: var(--color-ink);
+  stroke-width: 1.4;
+  stroke-linejoin: round;
+
+  circle {
+    fill: var(--color-calc);
+    stroke: none;
+  }
 }
 
-// Says out loud that the preview is tappable — there's no hover to hint at it.
-.mini-map__hint {
-  @include type.eyebrow;
-  position: absolute;
-  top: var(--space-3);
-  right: var(--space-3);
-  z-index: 3;
+.map-link__text {
+  flex: 1;
+  min-width: 0;
   display: flex;
-  align-items: center;
-  min-height: 36px;
-  padding: 0 var(--space-4);
-  background: var(--color-calc);
-  border: 1px solid var(--color-ink);
-  border-radius: 100px;
-  color: var(--color-ink);
-  box-shadow: 0 4px 12px rgba(59, 40, 30, 0.18);
+  flex-direction: column;
+  gap: 2px;
+}
+
+.map-link__title {
+  @include type.heading-3;
+}
+
+.map-link__meta {
+  @include type.meta;
+  color: var(--color-ink-soft);
+}
+
+.map-link__arrow {
+  font-size: 1.8rem;
+  line-height: 1;
 }
 
 .row {

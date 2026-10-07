@@ -103,7 +103,7 @@ export class Map {
     updateZoomState();
 
     for (const place of this.placeService.getAll()) {
-      const element = createPinElement(place.name, { label: true, interactive: true });
+      const element = createPinElement(place.name);
       element.addEventListener('click', () => this.router.navigate(['/lloc', place.slug]));
       new maplibregl.Marker({ element, anchor: 'bottom' }).setLngLat([place.lng, place.lat]).addTo(map);
       this.pins.set(place.slug, { element, lngLat: [place.lng, place.lat] });

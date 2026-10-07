@@ -115,21 +115,16 @@ export function createBrandMap(options: Omit<maplibregl.MapOptions, 'style'>): m
   return map;
 }
 
-/**
- * The orange pin for a place. The big map's pins are buttons; the preview map
- * in a fitxa sits inside a link, so its pins are plain (non-interactive) spans.
- */
-export function createPinElement(name: string, options: { label: boolean; interactive: boolean }): HTMLElement {
-  const element = document.createElement(options.interactive ? 'button' : 'span');
+/** The orange pin for a place, with its name in a dark pill above it. */
+export function createPinElement(name: string): HTMLButtonElement {
+  const element = document.createElement('button');
   element.className = 'map-pin';
-  if (element instanceof HTMLButtonElement) element.type = 'button';
+  element.type = 'button';
   element.setAttribute('aria-label', name);
 
-  if (options.label) {
-    const label = document.createElement('span');
-    label.className = 'map-pin__label';
-    label.textContent = name;
-    element.append(label);
-  }
+  const label = document.createElement('span');
+  label.className = 'map-pin__label';
+  label.textContent = name;
+  element.append(label);
   return element;
 }
