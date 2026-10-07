@@ -1,14 +1,6 @@
-<div class="topbar">
-  <div class="search-pill">Cerca un poble, comarca…</div>
-  <a routerLink="/perfil" class="avatar-btn" aria-label="Perfil"></a>
-</div>
-<div class="chips">
-  <span appChip>Tots</span>
-  <span appChip>Patrimoni</span>
-  <span appChip>Natura</span>
-</div>
+<app-filter-bar class="filters" />
 
-@if (collections.length) {
+@if (collections.length && !filters.isActive()) {
   <p class="sec-eyebrow">Col·leccions</p>
   <div class="coll-row">
     @for (c of collections; track c.slug) {
@@ -33,4 +25,6 @@
       </div>
     </a>
   }
+} @empty {
+  <p class="empty" role="status">Cap lloc coincideix amb la cerca.</p>
 }

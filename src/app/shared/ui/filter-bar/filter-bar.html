@@ -1,0 +1,65 @@
+<div class="topbar">
+  <div class="search-box">
+    <label class="search">
+      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="10.5" cy="10.5" r="6" />
+        <line x1="15" y1="15" x2="20" y2="20" />
+      </svg>
+      <input
+        id="place-search"
+        type="search"
+        role="combobox"
+        autocomplete="off"
+        placeholder="Cerca un poble, comarca…"
+        aria-label="Cerca un poble o comarca"
+        aria-autocomplete="list"
+        aria-controls="search-suggestions"
+        [attr.aria-expanded]="listOpen()"
+        [attr.aria-activedescendant]="activeIndex() >= 0 ? 'suggestion-' + activeIndex() : null"
+        [value]="filters.query()"
+        (input)="onSearch($event)"
+        (focus)="open.set(true)"
+        (blur)="open.set(false)"
+        (keydown)="onKeydown($event)"
+      />
+      @if (filters.query()) {
+        <button type="button" class="clear" aria-label="Esborra la cerca" (click)="filters.query.set('')">×</button>
+      }
+    </label>
+
+    @if (listOpen()) {
+      <ul class="suggestions" id="search-suggestions" role="listbox" aria-label="Suggeriments">
+        @for (s of suggestions(); track s.id; let i = $index) {
+          <li role="option" [id]="'suggestion-' + i" [attr.aria-selected]="i === activeIndex()">
+            <!-- mousedown keeps focus on the input so the blur doesn't close the list before the click lands -->
+            <button
+              type="button"
+              tabindex="-1"
+              [class.active]="i === activeIndex()"
+              (mousedown)="$event.preventDefault()"
+              (click)="pick(s)"
+            >
+              <span class="label">{{ s.before }}<strong>{{ s.match }}</strong>{{ s.after }}</span>
+              <span class="detail">{{ s.detail }}</span>
+            </button>
+          </li>
+        }
+      </ul>
+    }
+  </div>
+  <a routerLink="/perfil" class="avatar-btn" aria-label="Perfil"></a>
+</div>
+
+<div class="chips" role="group" aria-label="Categories">
+  @for (c of categories; track c.id) {
+    <button
+      type="button"
+      appChip
+      [active]="filters.category() === c.id"
+      [attr.aria-pressed]="filters.category() === c.id"
+      (click)="filters.category.set(c.id)"
+    >
+      {{ c.label }}
+    </button>
+  }
+</div>

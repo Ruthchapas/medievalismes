@@ -1,5 +1,7 @@
 export type PlaceIconType = 'castell' | 'esglesia' | 'mirador' | 'sender';
 
+export type PlaceCategory = 'patrimoni' | 'natura';
+
 export interface PlaceHighlight {
   icon: PlaceIconType;
   label: string;
@@ -21,6 +23,7 @@ export interface Place {
   altitud: number;
   lat: number;
   lng: number;
+  categories: PlaceCategory[];
   routeTag?: string;
   photoUrl?: string;
   /** Short one-liner for list/grid cards — distinct from introText. */

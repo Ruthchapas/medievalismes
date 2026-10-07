@@ -1,0 +1,163 @@
+@use 'app/design/typography' as type;
+
+:host {
+  display: block;
+}
+
+.topbar {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.search-box {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
+.suggestions {
+  position: absolute;
+  top: calc(100% + var(--space-2));
+  left: 0;
+  right: 0;
+  z-index: 5;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow: hidden;
+  background: var(--color-calc);
+  border: 1px solid var(--color-ink);
+  border-radius: 20px;
+  box-shadow: 0 12px 28px rgba(59, 40, 30, 0.22);
+
+  li + li {
+    border-top: 1px solid var(--color-border);
+  }
+
+  button {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-3);
+    width: 100%;
+    min-height: 48px;
+    padding: var(--space-3) var(--space-4);
+    border: none;
+    background: transparent;
+    color: var(--color-ink);
+    text-align: left;
+    cursor: pointer;
+
+    &:hover,
+    &.active {
+      background: color-mix(in srgb, var(--color-ink) 9%, var(--color-calc));
+    }
+  }
+
+  // Regular weight for the part still to be typed, heavier for the letters
+  // already typed, so the match reads at a glance.
+  .label {
+    @include type.heading-3;
+    font-weight: 400;
+
+    strong {
+      font-weight: 600;
+    }
+  }
+
+  .detail {
+    @include type.eyebrow;
+    flex-shrink: 0;
+    color: color-mix(in srgb, var(--color-ink) 75%, transparent);
+  }
+}
+
+.search {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding: 0 var(--space-4);
+  background: var(--color-calc);
+  border: 1px solid var(--color-ink);
+  border-radius: 100px;
+  box-shadow: 0 6px 16px rgba(59, 40, 30, 0.14);
+
+  &:focus-within {
+    outline: 2px solid var(--color-blau);
+    outline-offset: 2px;
+  }
+}
+
+.icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  fill: none;
+  stroke: var(--color-ink);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+
+input {
+  @include type.meta;
+  font-size: 0.82rem;
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--color-ink);
+
+  // Ink at 75% over calç stays above 4.5:1; the old 65% opacity on the whole
+  // pill dropped to ~3:1 and went see-through over the map.
+  &::placeholder {
+    color: color-mix(in srgb, var(--color-ink) 75%, transparent);
+    opacity: 1;
+  }
+
+  &::-webkit-search-cancel-button {
+    display: none;
+  }
+}
+
+.clear {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-ink);
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid var(--color-blau);
+  }
+}
+
+.avatar-btn {
+  display: block;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--color-blau);
+  border: 1px solid var(--color-ink);
+  box-shadow: 0 6px 16px rgba(59, 40, 30, 0.14);
+
+  &:focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 2px;
+  }
+}
+
+.chips {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+  flex-wrap: wrap;
+}

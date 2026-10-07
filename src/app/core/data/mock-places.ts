@@ -12,6 +12,7 @@ export const MOCK_PLACES: Record<string, Place> = {
     altitud: 850,
     lat: 41.9192,
     lng: 2.4658,
+    categories: ['patrimoni', 'natura'],
     routeTag: 'Collsacabra',
     teaser: 'Cases de pedra dels segles XVI i XVII.',
     introText:
@@ -38,6 +39,7 @@ export const MOCK_PLACES: Record<string, Place> = {
     altitud: 760,
     lat: 41.9357,
     lng: 2.4419,
+    categories: ['patrimoni', 'natura'],
     routeTag: 'Collsacabra',
     teaser: 'Un balcó sobre el pantà de Sau.',
     introText: 'Un balcó de pedra sobre el pantà de Sau, a tocar del cingle.',
@@ -55,6 +57,7 @@ export const MOCK_PLACES: Record<string, Place> = {
     altitud: 640,
     lat: 41.905,
     lng: 2.4459,
+    categories: ['patrimoni'],
     teaser: 'Absis romànic entre alzinars.',
     introText: 'Una petita parròquia romànica entremig d’alzinars.',
     contextText: "Fitxa pendent d'ampliar amb el mateix nivell de detall que Rupit.",

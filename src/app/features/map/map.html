@@ -1,11 +1,7 @@
 <div class="map-host" #mapContainer></div>
 
-<div class="topbar">
-  <div class="search-pill">Cerca un poble, comarca…</div>
-  <a routerLink="/perfil" class="avatar-btn" aria-label="Perfil"></a>
-</div>
-<div class="chips">
-  <span appChip>Tots</span>
-  <span appChip>Patrimoni</span>
-  <span appChip>Natura</span>
-</div>
+<app-filter-bar class="filters" />
+
+@if (filters.places().length === 0) {
+  <p class="empty" role="status">Cap lloc coincideix amb la cerca.</p>
+}

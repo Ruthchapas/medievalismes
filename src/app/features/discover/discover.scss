@@ -5,39 +5,14 @@
   padding-bottom: calc(var(--space-9) + 64px);
 }
 
-.topbar {
-  display: flex;
-  gap: var(--space-2);
+.filters {
   padding: var(--space-4) var(--space-4) 0;
 }
 
-.search-pill {
-  flex: 1;
-  height: 38px;
-  background: var(--color-calc);
-  border: 1px solid var(--color-ink);
-  border-radius: 100px;
-  display: flex;
-  align-items: center;
-  padding: 0 var(--space-4);
-  @include type.meta;
-  opacity: 0.65;
-}
-
-.avatar-btn {
-  display: block;
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  background: var(--color-blau);
-  border: 1px solid var(--color-ink);
-  flex-shrink: 0;
-}
-
-.chips {
-  display: flex;
-  gap: var(--space-2);
-  padding: var(--space-3) var(--space-4) 0;
+.empty {
+  @include type.body;
+  color: var(--color-ink);
+  padding: var(--space-6) var(--space-4);
 }
 
 .sec-eyebrow {
