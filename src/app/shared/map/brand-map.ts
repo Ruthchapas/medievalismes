@@ -1,4 +1,6 @@
-import type { Map as MapLibreMap } from 'maplibre-gl';
+import * as maplibregl from 'maplibre-gl';
+
+type MapLibreMap = maplibregl.Map;
 
 // Mirrors src/app/design/_tokens.scss — MapLibre paint properties can't read
 // CSS custom properties, so the hex values are duplicated here on purpose.
@@ -88,10 +90,46 @@ export function applyBrandTint(map: MapLibreMap): void {
     }
 
     if (layer.type === 'symbol') {
-      // 'text-color' is valid on every symbol layer regardless of its layout,
-      // so this is safe even for the handful of icon-only POI layers.
+      // The base map's own shops/restaurants/schools in their stock colours would
+      // compete with our highlighted spots, so only ours are drawn.
+      if (sourceLayer === 'poi') {
+        map.setLayoutProperty(layer.id, 'visibility', 'none');
+        continue;
+      }
+      // 'text-color' is valid on every symbol layer regardless of its layout.
       map.setPaintProperty(layer.id, 'text-color', BRAND.ink);
       map.setPaintProperty(layer.id, 'text-halo-color', BRAND.calc);
     }
   }
+}
+
+/** A MapLibre map on the brand style, ready to use. */
+export function createBrandMap(options: Omit<maplibregl.MapOptions, 'style'>): maplibregl.Map {
+  // MapLibre's own `new Worker(new URL(...))` reference doesn't resolve
+  // through Angular's build tooling, so it's pointed at the copy we serve
+  // as a static asset instead (see angular.json's "assets").
+  maplibregl.setWorkerUrl('/maplibre-gl-worker.mjs');
+
+  const map = new maplibregl.Map({ ...options, style: MAP_STYLE_URL });
+  map.on('load', () => applyBrandTint(map));
+  return map;
+}
+
+/**
+ * The orange pin for a place. The big map's pins are buttons; the preview map
+ * in a fitxa sits inside a link, so its pins are plain (non-interactive) spans.
+ */
+export function createPinElement(name: string, options: { label: boolean; interactive: boolean }): HTMLElement {
+  const element = document.createElement(options.interactive ? 'button' : 'span');
+  element.className = 'map-pin';
+  if (element instanceof HTMLButtonElement) element.type = 'button';
+  element.setAttribute('aria-label', name);
+
+  if (options.label) {
+    const label = document.createElement('span');
+    label.className = 'map-pin__label';
+    label.textContent = name;
+    element.append(label);
+  }
+  return element;
 }

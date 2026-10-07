@@ -4,14 +4,13 @@ export type PlaceCategory = 'patrimoni' | 'natura';
 
 export interface PlaceHighlight {
   icon: PlaceIconType;
-  label: string;
-}
-
-export interface NearbyPlace {
-  slug: string;
+  /** Short name, used on the map ("Sant Miquel Arcàngel"). */
   name: string;
-  distanceKm: number;
-  photoUrl?: string;
+  /** Longer description, used in the fitxa and in the map card. */
+  label: string;
+  /** Where it is. Optional: a highlight without a location is simply not drawn on the map. */
+  lat?: number;
+  lng?: number;
 }
 
 export interface Place {
@@ -32,5 +31,6 @@ export interface Place {
   contextText: string;
   highlights: PlaceHighlight[];
   gallery: string[];
-  nearby: NearbyPlace[];
+  /** Slugs of nearby places; distances are worked out from the coordinates. */
+  nearby: string[];
 }

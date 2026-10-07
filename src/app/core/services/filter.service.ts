@@ -70,6 +70,11 @@ export class FilterService {
 
   readonly isActive = computed(() => this.query().trim() !== '' || this.category() !== 'tots');
 
+  reset(): void {
+    this.query.set('');
+    this.category.set('tots');
+  }
+
   private inCategory(place: Place): boolean {
     const category = this.category();
     return category === 'tots' || place.categories.includes(category);

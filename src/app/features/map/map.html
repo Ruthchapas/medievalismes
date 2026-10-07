@@ -5,3 +5,16 @@
 @if (filters.places().length === 0) {
   <p class="empty" role="status">Cap lloc coincideix amb la cerca.</p>
 }
+
+@if (selected(); as spot) {
+  <section class="spot" aria-live="polite">
+    <app-place-icon class="spot__icon" [type]="spot.icon" />
+    <div class="spot__body">
+      <p class="spot__place">{{ spot.placeName }}</p>
+      <h2 class="spot__name">{{ spot.name }}</h2>
+      <p class="spot__text">{{ spot.label }}</p>
+      <a class="spot__link" [routerLink]="['/lloc', spot.placeSlug]">Veure la fitxa de {{ spot.placeName }} ›</a>
+    </div>
+    <button type="button" class="spot__close" aria-label="Tanca" (click)="selected.set(null)">×</button>
+  </section>
+}

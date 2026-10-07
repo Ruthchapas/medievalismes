@@ -19,6 +19,82 @@
   z-index: 1;
 }
 
+// Card for the highlight you tapped. Sits above the floating nav; no hover involved.
+.spot {
+  position: absolute;
+  left: var(--gutter);
+  // Leaves the +/- zoom buttons (44px at the right edge) uncovered on phones.
+  right: max(var(--gutter), 68px);
+  bottom: calc(var(--space-5) + var(--tap) + var(--space-2) * 2 + var(--space-3));
+  z-index: 2;
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+  padding: var(--space-4);
+  background: var(--color-calc);
+  border: 1px solid var(--color-ink);
+  box-shadow: 0 12px 28px rgba(59, 40, 30, 0.22);
+  animation: spot-rise var(--dur-base) var(--ease-soft);
+}
+
+@keyframes spot-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+.spot__icon {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+}
+
+.spot__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.spot__place {
+  @include type.eyebrow;
+  color: var(--color-terracota-text);
+}
+
+.spot__name {
+  @include type.heading-3;
+  margin: 2px 0 var(--space-1);
+}
+
+.spot__text {
+  @include type.body-sm;
+  color: var(--color-ink);
+}
+
+.spot__link {
+  @include type.meta;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap);
+  color: var(--color-blau);
+}
+
+.spot__close {
+  flex-shrink: 0;
+  width: var(--tap);
+  height: var(--tap);
+  margin: calc(var(--space-3) * -1) calc(var(--space-3) * -1) 0 0;
+  border: none;
+  background: transparent;
+  color: var(--color-ink);
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid var(--color-blau);
+  }
+}
+
 .empty {
   @include type.meta;
   position: absolute;

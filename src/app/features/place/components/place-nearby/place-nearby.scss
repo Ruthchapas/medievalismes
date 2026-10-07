@@ -6,11 +6,40 @@
 }
 
 .mini-map {
-  width: 100%;
-  aspect-ratio: 16 / 8;
-  border: 1px solid var(--color-border);
-  background: var(--color-calc);
+  position: relative;
+  display: block;
+  height: clamp(190px, 32vw, 280px);
+  border: 1px solid var(--color-ink);
   margin-bottom: var(--space-3);
+  overflow: hidden;
+
+  &:focus-visible {
+    outline: 2px solid var(--color-blau);
+    outline-offset: 2px;
+  }
+}
+
+.mini-map__canvas {
+  position: absolute;
+  inset: 0;
+}
+
+// Says out loud that the preview is tappable — there's no hover to hint at it.
+.mini-map__hint {
+  @include type.eyebrow;
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 0 var(--space-4);
+  background: var(--color-calc);
+  border: 1px solid var(--color-ink);
+  border-radius: 100px;
+  color: var(--color-ink);
+  box-shadow: 0 4px 12px rgba(59, 40, 30, 0.18);
 }
 
 .row {
@@ -24,6 +53,10 @@
   text-decoration: none;
   color: inherit;
   display: block;
+
+  &:active {
+    background: color-mix(in srgb, var(--color-ink) 7%, transparent);
+  }
 }
 
 .thumb {
