@@ -1,6 +1,10 @@
 @if (place(); as p) {
   <article class="fitxa">
-    <app-place-header [place]="p" [saved]="saved()" (savedChange)="saved.set($event)" />
+    <app-place-header
+      [place]="p"
+      [saved]="savedService.isSaved(p.slug)"
+      (savedChange)="savedService.toggle(p.slug)"
+    />
 
     <div class="body">
       <p class="intro">{{ p.introText }}</p>

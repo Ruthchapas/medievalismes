@@ -1,6 +1,25 @@
-<main class="screen">
-  <a routerLink="/descobreix" class="back">‹ Descobreix</a>
-  <p class="eyebrow">Una sèrie de</p>
-  <h1 class="title">{{ slug() }}</h1>
-  <p class="placeholder">Llista numerada de llocs de la ruta — pendent de connectar amb el CMS.</p>
-</main>
+@if (collection(); as c) {
+  <div class="hero" [style.background]="c.coverPhotoUrl ? 'url(' + c.coverPhotoUrl + ')' : 'linear-gradient(160deg, #dcb669, #96524a)'">
+    <a routerLink="/descobreix" class="back" aria-label="Torna a Descobreix">‹</a>
+    <span class="kicker">{{ c.kicker }}</span>
+    <h1 class="title">{{ c.title }}</h1>
+  </div>
+
+  <p class="intro">{{ c.intro }}</p>
+
+  @for (row of rows(); track row!.place.slug; let i = $index) {
+    <a class="num-row" [routerLink]="['/lloc', row!.place.slug]">
+      <span class="num">{{ (i + 1) | number: '2.0' }}</span>
+      <div class="thumb" [style.background]="row!.place.photoUrl ? 'url(' + row!.place.photoUrl + ')' : 'linear-gradient(155deg, #e6d2a8, #b9793e)'"></div>
+      <div>
+        <p class="name">{{ row!.place.name }}</p>
+        <p class="highlight">{{ row!.highlight }}</p>
+      </div>
+    </a>
+  }
+} @else {
+  <main class="not-found">
+    <a routerLink="/descobreix" class="back-link">‹ Descobreix</a>
+    <p class="eyebrow">Col·lecció no trobada</p>
+  </main>
+}

@@ -1,5 +1,36 @@
-<main class="screen">
-  <p class="eyebrow">Pantalla</p>
-  <h1 class="title">Descobreix</h1>
-  <p class="placeholder">Llista agrupada per comarca — pendent de connectar amb el contingut real.</p>
-</main>
+<div class="topbar">
+  <div class="search-pill">Cerca un poble, comarca…</div>
+  <a routerLink="/perfil" class="avatar-btn" aria-label="Perfil"></a>
+</div>
+<div class="chips">
+  <span appChip>Tots</span>
+  <span appChip>Patrimoni</span>
+  <span appChip>Natura</span>
+</div>
+
+@if (collections.length) {
+  <p class="sec-eyebrow">Col·leccions</p>
+  <div class="coll-row">
+    @for (c of collections; track c.slug) {
+      <a class="coll-card" [routerLink]="['/coleccio', c.slug]" [style.background]="c.coverPhotoUrl ? 'url(' + c.coverPhotoUrl + ')' : 'linear-gradient(160deg, #dcb669, #96524a)'">
+        <span>{{ c.title }}</span>
+      </a>
+    }
+  </div>
+}
+
+@for (group of groups(); track group.comarca) {
+  <p class="sec-eyebrow">{{ group.comarca }}</p>
+  @for (place of group.places; track place.slug) {
+    <a class="list-card" [routerLink]="['/lloc', place.slug]">
+      <div class="list-thumb" [style.background]="place.photoUrl ? 'url(' + place.photoUrl + ')' : 'linear-gradient(155deg, #e6d2a8, #b9793e)'"></div>
+      <div>
+        <p class="list-name">{{ place.name }}</p>
+        <p class="list-meta">{{ place.altitud }}M · {{ place.habitants }} HAB.</p>
+        @if (place.teaser) {
+          <p class="list-teaser">{{ place.teaser }}</p>
+        }
+      </div>
+    </a>
+  }
+}

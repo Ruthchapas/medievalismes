@@ -1,13 +1,13 @@
 import { afterNextRender, Component, DestroyRef, ElementRef, inject, viewChild } from '@angular/core';
 import * as maplibregl from 'maplibre-gl';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { PlaceService } from '../../core/services/place.service';
 import { Chip } from '../../shared/ui/chip/chip';
 import { applyBrandTint, MAP_STYLE_URL } from './map-style';
 
 @Component({
   selector: 'app-map',
-  imports: [Chip],
+  imports: [Chip, RouterLink],
   templateUrl: './map.html',
   styleUrl: './map.scss',
 })

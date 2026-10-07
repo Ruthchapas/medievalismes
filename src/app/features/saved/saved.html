@@ -1,5 +1,22 @@
-<main class="screen">
-  <p class="eyebrow">Pantalla</p>
-  <h1 class="title">Desats</h1>
-  <p class="placeholder">0 llocs desats — pendent de connectar amb l'estat de l'usuari.</p>
-</main>
+<div class="header">
+  <h1>Els teus llocs</h1>
+  <p>{{ places().length }} {{ places().length === 1 ? 'LLOC DESAT' : 'LLOCS DESATS' }}</p>
+</div>
+
+@if (places().length) {
+  <div class="grid">
+    @for (place of places(); track place!.slug) {
+      <a class="card" [routerLink]="['/lloc', place!.slug]">
+        <div class="thumb" [style.background]="place!.photoUrl ? 'url(' + place!.photoUrl + ')' : 'linear-gradient(155deg, #e6d2a8, #b9793e)'">
+          <div class="badge">
+            <svg viewBox="0 0 24 24"><path d="M6,4 H18 V21 L12,16 L6,21 Z" /></svg>
+          </div>
+        </div>
+        <p class="name">{{ place!.name }}</p>
+        <p class="meta">{{ place!.comarca | uppercase }}</p>
+      </a>
+    }
+  </div>
+} @else {
+  <p class="empty">Encara no has desat cap lloc. Toca l'icona de marcador en una fitxa per guardar-la aquí.</p>
+}

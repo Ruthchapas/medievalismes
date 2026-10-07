@@ -23,6 +23,8 @@ export interface Place {
   lng: number;
   routeTag?: string;
   photoUrl?: string;
+  /** Short one-liner for list/grid cards — distinct from introText. */
+  teaser?: string;
   introText: string;
   contextText: string;
   highlights: PlaceHighlight[];

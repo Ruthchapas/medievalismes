@@ -1,25 +1,106 @@
 @use 'app/design/layout';
 @use 'app/design/typography' as type;
 
-.screen {
-  @include layout.screen;
-  padding-top: var(--space-6);
+:host {
+  display: block;
+  padding-bottom: var(--space-8);
 }
+
+.hero {
+  position: relative;
+  height: 190px;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: var(--space-4);
+}
+
 .back {
+  position: absolute;
+  top: var(--space-4);
+  left: var(--space-4);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(242, 234, 217, 0.85);
+  border: 1px solid var(--color-ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-ink);
+  text-decoration: none;
+}
+
+.kicker {
+  @include type.blackletter-accent;
+  font-size: 0.95rem;
+  color: var(--color-calc);
+  opacity: 0.9;
+}
+
+.title {
+  @include type.heading-2;
+  font-size: 1.4rem;
+  color: var(--color-calc);
+  margin-top: 4px;
+}
+
+.intro {
+  @include type.body-sm;
+  font-style: italic;
+  opacity: 0.85;
+  padding: var(--space-4);
+}
+
+.num-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-4);
+  text-decoration: none;
+  color: inherit;
+}
+
+.num {
+  @include type.heading-2;
+  font-size: 1.2rem;
+  color: var(--color-terracota);
+  width: 24px;
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.thumb {
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+  background-size: cover;
+  background-position: center;
+}
+
+.name {
+  @include type.heading-3;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.highlight {
   @include type.meta;
-  display: inline-block;
+  opacity: 0.6;
+  margin: 2px 0 0;
+}
+
+.not-found {
+  @include layout.screen;
+}
+.back-link {
+  @include type.meta;
   color: var(--color-ink-dim);
+  display: inline-block;
   margin-bottom: var(--space-5);
 }
 .eyebrow {
   @include layout.screen-eyebrow;
-}
-.title {
-  @include layout.screen-title;
-  text-transform: capitalize;
-}
-.placeholder {
-  @include type.body;
-  max-width: 42ch;
-  color: var(--color-ink-dim);
 }

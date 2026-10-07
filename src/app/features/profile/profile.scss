@@ -1,17 +1,59 @@
-@use 'app/design/layout';
 @use 'app/design/typography' as type;
 
-.screen {
-  @include layout.screen;
+:host {
+  display: block;
+  padding-bottom: calc(var(--space-9) + 64px);
 }
-.eyebrow {
-  @include layout.screen-eyebrow;
+
+.top {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-6) var(--space-4) var(--space-4);
 }
-.title {
-  @include layout.screen-title;
+
+.avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--color-terracota);
+  border: 1px solid var(--color-ink);
+  flex-shrink: 0;
 }
-.placeholder {
-  @include type.body;
-  max-width: 42ch;
-  color: var(--color-ink-dim);
+
+.name {
+  @include type.heading-3;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.email {
+  @include type.meta;
+  opacity: 0.55;
+  margin: 2px 0 0;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-4);
+  border-top: 1px solid var(--color-border);
+
+  span:first-child {
+    @include type.body;
+    font-size: var(--fs-body-sm);
+  }
+}
+
+.chev {
+  @include type.meta;
+  opacity: 0.45;
+}
+
+.foot {
+  @include type.eyebrow;
+  text-align: center;
+  opacity: 0.4;
+  padding: var(--space-6) var(--space-4);
 }
