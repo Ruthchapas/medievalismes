@@ -1,0 +1,24 @@
+{
+  "name": "medievalismes-studio",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "sanity dev",
+    "build": "sanity build",
+    "deploy": "sanity deploy",
+    "validate": "sanity schema validate",
+    "seed": "sanity dataset import seed/data.ndjson production"
+  },
+  "dependencies": {
+    "@sanity/vision": "^6.18.0",
+    "react": "^19.2.2",
+    "react-dom": "^19.2.2",
+    "sanity": "^6.18.0",
+    "styled-components": "^6.1.15"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.0",
+    "typescript": "~5.9.0"
+  }
+}

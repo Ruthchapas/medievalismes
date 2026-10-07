@@ -1,14 +1,16 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Collection } from '../models/collection.model';
-import { MOCK_COLLECTIONS } from '../data/mock-collections';
+import { ContentStore } from './content.store';
 
 @Injectable({ providedIn: 'root' })
 export class CollectionService {
+  private readonly store = inject(ContentStore);
+
   getBySlug(slug: string): Collection | undefined {
-    return MOCK_COLLECTIONS[slug];
+    return this.store.collections().find((collection) => collection.slug === slug);
   }
 
   getAll(): Collection[] {
-    return Object.values(MOCK_COLLECTIONS);
+    return this.store.collections();
   }
 }

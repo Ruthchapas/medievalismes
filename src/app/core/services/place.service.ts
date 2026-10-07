@@ -1,16 +1,17 @@
-import { Injectable } from '@angular/core';
+import { computed, inject, Injectable } from '@angular/core';
 import { Place } from '../models/place.model';
-import { MOCK_PLACES } from '../data/mock-places';
+import { ContentStore } from './content.store';
 
-// Thin seam over the content source. Today it reads the in-memory mock;
-// swapping in the real CMS client later means changing only this file.
 @Injectable({ providedIn: 'root' })
 export class PlaceService {
+  private readonly store = inject(ContentStore);
+  private readonly bySlug = computed(() => new Map(this.store.places().map((place) => [place.slug, place])));
+
   getBySlug(slug: string): Place | undefined {
-    return MOCK_PLACES[slug];
+    return this.bySlug().get(slug);
   }
 
   getAll(): Place[] {
-    return Object.values(MOCK_PLACES);
+    return this.store.places();
   }
 }
