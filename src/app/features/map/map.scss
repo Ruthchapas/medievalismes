@@ -14,8 +14,8 @@
 .filters {
   position: absolute;
   top: var(--space-4);
-  left: var(--space-4);
-  right: var(--space-4);
+  left: var(--gutter);
+  right: var(--gutter);
   z-index: 1;
 }
 

@@ -48,9 +48,17 @@
     text-align: left;
     cursor: pointer;
 
-    &:hover,
+    // :active gives touch feedback; hover only exists with a mouse, so it's
+    // opt-in and never the only way to see anything.
+    &:active,
     &.active {
       background: color-mix(in srgb, var(--color-ink) 9%, var(--color-calc));
+    }
+
+    @media (hover: hover) {
+      &:hover {
+        background: color-mix(in srgb, var(--color-ink) 9%, var(--color-calc));
+      }
     }
   }
 
@@ -68,7 +76,7 @@
   .detail {
     @include type.eyebrow;
     flex-shrink: 0;
-    color: color-mix(in srgb, var(--color-ink) 75%, transparent);
+    color: var(--color-ink-soft);
   }
 }
 
@@ -102,7 +110,8 @@
 
 input {
   @include type.meta;
-  font-size: 0.82rem;
+  // 16px or more: below that, iOS Safari zooms the whole page when the field is focused.
+  font-size: 1rem;
   flex: 1;
   min-width: 0;
   border: none;
@@ -123,8 +132,8 @@ input {
 }
 
 .clear {
-  width: 28px;
-  height: 28px;
+  width: 40px;
+  height: 40px;
   flex-shrink: 0;
   border: none;
   border-radius: 50%;

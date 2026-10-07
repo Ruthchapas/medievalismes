@@ -1,4 +1,4 @@
-<a routerLink="/mapa" class="back" aria-label="Torna al mapa">‹</a>
+<a appBackButton routerLink="/mapa" class="back" aria-label="Torna al mapa"></a>
 
 <div class="actions">
   <button
@@ -23,21 +23,30 @@
   @if (place().routeTag) {
     <span class="route-tag">{{ place().routeTag }}</span>
   }
-  <svg class="ornament" viewBox="0 0 400 70" preserveAspectRatio="none">
+  <svg class="ornament" [attr.viewBox]="'0 0 ' + ribbonWidth + ' 70'" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
     <defs>
-      <filter [attr.id]="filterId" x="-20%" y="-20%" width="140%" height="140%">
+      <filter [attr.id]="filterId" x="-5%" y="-20%" width="110%" height="140%">
         <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" result="n" />
         <feDisplacementMap in="SourceGraphic" in2="n" scale="5" />
         <feGaussianBlur stdDeviation="1.4" />
       </filter>
     </defs>
     <g [attr.filter]="'url(#' + filterId + ')'" opacity="0.9">
-      <path d="M0,60 Q100,40 200,55 T400,45 V70 H0 Z" fill="var(--color-oliva)" opacity="0.55" />
-      <ellipse cx="60" cy="50" rx="9" ry="4" fill="var(--color-oliva)" opacity="0.6" transform="rotate(-20 60 50)" />
-      <ellipse cx="140" cy="42" rx="9" ry="4" fill="var(--color-oliva)" opacity="0.6" transform="rotate(15 140 42)" />
-      <ellipse cx="260" cy="48" rx="9" ry="4" fill="var(--color-oliva)" opacity="0.6" transform="rotate(-15 260 48)" />
-      <ellipse cx="330" cy="40" rx="9" ry="4" fill="var(--color-oliva)" opacity="0.6" transform="rotate(20 330 40)" />
-      <ellipse cx="200" cy="58" rx="18" ry="9" fill="var(--color-terracota)" opacity="0.55" />
+      <path d="M0,60 Q200,40 400,55 T800,48 T1200,56 T1600,46 V70 H0 Z" fill="var(--color-oliva)" opacity="0.55" />
+      @for (leaf of leaves; track leaf.x) {
+        <ellipse
+          [attr.cx]="leaf.x"
+          [attr.cy]="leaf.y"
+          rx="11"
+          ry="5"
+          fill="var(--color-oliva)"
+          opacity="0.6"
+          [attr.transform]="'rotate(' + leaf.rotate + ' ' + leaf.x + ' ' + leaf.y + ')'"
+        />
+      }
+      @for (x of olives; track x) {
+        <ellipse [attr.cx]="x" cy="58" rx="20" ry="9" fill="var(--color-terracota)" opacity="0.55" />
+      }
     </g>
   </svg>
   <h1 class="name">{{ place().name }}</h1>

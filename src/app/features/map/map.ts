@@ -14,6 +14,8 @@ import { PlaceService } from '../../core/services/place.service';
 import { FilterBar } from '../../shared/ui/filter-bar/filter-bar';
 import { applyBrandTint, MAP_STYLE_URL } from './map-style';
 
+const LABELS_MIN_ZOOM = 10.5;
+
 @Component({
   selector: 'app-map',
   imports: [FilterBar],
@@ -45,8 +47,9 @@ export class Map {
     const map = new maplibregl.Map({
       container: this.mapContainer().nativeElement,
       style: MAP_STYLE_URL,
-      center: [2.4658, 41.9192], // Rupit — Collsacabra
-      zoom: 12.5,
+      // Open framing every place, with room at the sides for the names under the pins.
+      bounds: this.placeBounds(),
+      fitBoundsOptions: { padding: { top: 150, bottom: 130, left: 110, right: 110 }, maxZoom: 13 },
       attributionControl: { compact: true },
     });
     this.map = map;
@@ -54,18 +57,35 @@ export class Map {
     map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'bottom-right');
     map.on('load', () => applyBrandTint(map));
 
+    // Names sit under the pins; far enough out they'd overlap, so they hide.
+    const updateLabels = () => map.getContainer().classList.toggle('hide-pin-labels', map.getZoom() < LABELS_MIN_ZOOM);
+    map.on('zoom', updateLabels);
+    updateLabels();
+
     for (const place of this.placeService.getAll()) {
       const element = document.createElement('button');
       element.className = 'map-pin';
       element.type = 'button';
       element.setAttribute('aria-label', place.name);
       element.addEventListener('click', () => this.router.navigate(['/lloc', place.slug]));
+
+      const label = document.createElement('span');
+      label.className = 'map-pin__label';
+      label.textContent = place.name;
+      element.append(label);
+
       new maplibregl.Marker({ element, anchor: 'bottom' }).setLngLat([place.lng, place.lat]).addTo(map);
       this.pins.set(place.slug, { element, lngLat: [place.lng, place.lat] });
     }
 
     this.syncPins(this.filters.places().map((place) => place.slug));
     this.destroyRef.onDestroy(() => map.remove());
+  }
+
+  private placeBounds(): maplibregl.LngLatBounds {
+    const bounds = new maplibregl.LngLatBounds();
+    for (const place of this.placeService.getAll()) bounds.extend([place.lng, place.lat]);
+    return bounds;
   }
 
   /** Shows only the pins that match the current filter and frames them. */

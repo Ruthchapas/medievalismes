@@ -5,10 +5,11 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { CollectionService } from '../../core/services/collection.service';
 import { PlaceService } from '../../core/services/place.service';
+import { BackButton } from '../../shared/ui/back-button/back-button';
 
 @Component({
   selector: 'app-collection',
-  imports: [RouterLink, DecimalPipe],
+  imports: [RouterLink, DecimalPipe, BackButton],
   templateUrl: './collection.html',
   styleUrl: './collection.scss',
 })

@@ -1,6 +1,6 @@
 @if (collection(); as c) {
   <div class="hero" [style.background]="c.coverPhotoUrl ? 'url(' + c.coverPhotoUrl + ')' : 'linear-gradient(160deg, #dcb669, #96524a)'">
-    <a routerLink="/descobreix" class="back" aria-label="Torna a Descobreix">‹</a>
+    <a appBackButton routerLink="/descobreix" class="back" aria-label="Torna a Descobreix"></a>
     <span class="kicker">{{ c.kicker }}</span>
     <h1 class="title">{{ c.title }}</h1>
   </div>

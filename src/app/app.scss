@@ -4,8 +4,8 @@
   bottom: var(--space-5);
   transform: translateX(-50%);
   display: flex;
-  gap: var(--space-5);
-  padding: var(--space-3) var(--space-6);
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
   background: var(--color-calc);
   border: 1px solid var(--color-ink);
   border-radius: 100px;
@@ -17,12 +17,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
+  width: 52px;
+  height: var(--tap);
+  border-radius: 100px;
+
+  &:focus-visible {
+    outline: 2px solid var(--color-blau);
+    outline-offset: 2px;
+  }
 
   svg {
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
 
     path,
     line {

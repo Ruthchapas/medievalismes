@@ -7,8 +7,13 @@
   --color-calc: #f2ead9;
   --color-ink: #3b281e;
   --color-ink-dim: #8b7f6d;
+  // Secondary text. Ink at 75% stays above 4.5:1 on calç; the old opacity
+  // values (.55–.65) on small text fell to about 3:1.
+  --color-ink-soft: color-mix(in srgb, var(--color-ink) 75%, transparent);
   --color-border: #d9cbaf;
   --color-terracota: #c1602b;
+  // Terracotta for small text: the brand tone is only 3.5:1 on calç, this one is 5.2:1.
+  --color-terracota-text: #9a4a1f;
   --color-blau: #2c5f73;
   --color-oliva: #6b7a45;
   --color-groc: #d9a441;
@@ -24,9 +29,17 @@
   --fs-h2: 1.4rem;
   --fs-h3: 1.1rem;
   --fs-body: 1rem;
-  --fs-body-sm: 0.875rem;
-  --fs-meta: 0.78rem;
-  --fs-eyebrow: 0.68rem;
+  --fs-body-sm: 0.9375rem;
+  --fs-meta: 0.8125rem;
+  --fs-eyebrow: 0.75rem;
+
+  // Reading column. Phones fill the screen; on tablets the content settles into
+  // a centred column and everything that aligns to it uses --gutter.
+  --column-width: 640px;
+  --gutter: max(var(--space-4), calc((100vw - var(--column-width)) / 2));
+
+  // Minimum comfortable touch target.
+  --tap: 44px;
 
   // Spacing (8-step scale)
   --space-1: 4px;

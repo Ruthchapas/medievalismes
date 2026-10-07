@@ -6,31 +6,31 @@
 }
 
 .filters {
-  padding: var(--space-4) var(--space-4) 0;
+  padding: var(--space-4) var(--gutter) 0;
 }
 
 .empty {
   @include type.body;
   color: var(--color-ink);
-  padding: var(--space-6) var(--space-4);
+  padding: var(--space-6) var(--gutter);
 }
 
 .sec-eyebrow {
   @include type.eyebrow;
-  color: var(--color-terracota);
-  padding: var(--space-6) var(--space-4) var(--space-3);
+  color: var(--color-terracota-text);
+  padding: var(--space-6) var(--gutter) var(--space-3);
 }
 
 .coll-row {
   display: flex;
   gap: var(--space-3);
-  padding: 0 var(--space-4);
+  padding: 0 var(--gutter);
   overflow-x: auto;
 }
 
 .coll-card {
-  width: 160px;
-  height: 100px;
+  width: 180px;
+  height: 112px;
   flex-shrink: 0;
   background-size: cover;
   background-position: center;
@@ -41,7 +41,7 @@
 
   span {
     @include type.heading-3;
-    font-size: 0.82rem;
+    font-size: 1rem;
     color: var(--color-calc);
     line-height: 1.2;
   }
@@ -50,15 +50,20 @@
 .list-card {
   display: flex;
   gap: var(--space-3);
-  padding: var(--space-2) var(--space-4);
+  padding: var(--space-2) var(--gutter);
+  min-height: 80px;
   align-items: center;
   text-decoration: none;
   color: inherit;
+
+  &:active {
+    background: color-mix(in srgb, var(--color-ink) 7%, transparent);
+  }
 }
 
 .list-thumb {
-  width: 64px;
-  height: 64px;
+  width: 68px;
+  height: 68px;
   flex-shrink: 0;
   background-size: cover;
   background-position: center;
@@ -71,14 +76,14 @@
 
 .list-meta {
   @include type.meta;
-  opacity: 0.55;
+  color: var(--color-ink-soft);
   margin: 2px 0 3px;
 }
 
 .list-teaser {
   font-family: var(--font-body);
   font-style: italic;
-  font-size: 0.78rem;
-  opacity: 0.75;
+  font-size: var(--fs-body-sm);
+  color: var(--color-ink-soft);
   margin: 0;
 }

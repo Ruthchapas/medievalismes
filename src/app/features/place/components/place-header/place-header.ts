@@ -2,12 +2,23 @@ import { UpperCasePipe } from '@angular/common';
 import { Component, computed, input, output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Place } from '../../../../core/models/place.model';
+import { BackButton } from '../../../../shared/ui/back-button/back-button';
 
 let uid = 0;
 
+// The ribbon is drawn wide and cropped to the screen (never stretched), so a
+// tablet simply shows more leaves instead of a distorted drawing.
+const RIBBON_WIDTH = 1600;
+const LEAVES = Array.from({ length: 16 }, (_, i) => ({
+  x: 50 + i * 100,
+  y: 44 + Math.sin(i * 1.9) * 6,
+  rotate: i % 2 ? 18 : -22,
+}));
+const OLIVES = [130, 450, 770, 1090, 1410];
+
 @Component({
   selector: 'app-place-header',
-  imports: [RouterLink, UpperCasePipe],
+  imports: [RouterLink, UpperCasePipe, BackButton],
   templateUrl: './place-header.html',
   styleUrl: './place-header.scss',
 })
@@ -18,6 +29,10 @@ export class PlaceHeader {
 
   /** Unique per instance so the watercolor filter never collides across cards. */
   protected readonly filterId = `place-wash-${uid++}`;
+
+  protected readonly ribbonWidth = RIBBON_WIDTH;
+  protected readonly leaves = LEAVES;
+  protected readonly olives = OLIVES;
 
   protected readonly photoStyle = computed(() => {
     const url = this.place().photoUrl;
