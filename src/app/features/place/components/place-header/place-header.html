@@ -11,7 +11,7 @@
   >
     <svg viewBox="0 0 24 24"><path d="M6,4 H18 V21 L12,16 L6,21 Z" /></svg>
   </button>
-  <button type="button" class="action-btn" aria-label="Comparteix">
+  <button type="button" class="action-btn" aria-label="Comparteix" (click)="share()">
     <svg viewBox="0 0 24 24" fill="none">
       <path d="M12,15 V4 M8,8 L12,4 L16,8" />
       <path d="M5,13 V19 H19 V13" />
@@ -56,3 +56,7 @@
   {{ place().name | uppercase }} · {{ place().comarca | uppercase }} · {{ place().altitud }}M ·
   {{ place().habitants }} HAB.
 </p>
+
+@if (toast(); as message) {
+  <div class="toast" role="status">{{ message }}</div>
+}

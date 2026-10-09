@@ -15,6 +15,21 @@
   flex: 1;
   min-width: 88px;
   aspect-ratio: 1;
+  padding: 0;
+  border: none;
   background-size: cover;
   background-position: center;
+}
+
+button.thumb {
+  cursor: pointer;
+
+  &:active {
+    opacity: 0.8;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-blau);
+    outline-offset: 2px;
+  }
 }

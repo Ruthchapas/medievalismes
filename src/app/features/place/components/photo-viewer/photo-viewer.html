@@ -1,0 +1,35 @@
+<div
+  class="viewer"
+  role="dialog"
+  aria-modal="true"
+  [attr.aria-label]="label() ? label() + ' — galeria de fotos' : 'Galeria de fotos'"
+  (click)="onBackdropClick($event)"
+  (pointerdown)="onPointerDown($event)"
+  (pointerup)="onPointerUp($event)"
+  (pointercancel)="onPointerUp($event)"
+>
+  <div class="ambient" [style.background-image]="'url(' + placeholder() + ')'"></div>
+
+  <img
+    class="photo"
+    [class.loaded]="loaded()"
+    [src]="large()"
+    [alt]="(label() ? label() + ' — ' : '') + 'foto ' + (index() + 1) + ' de ' + count()"
+    draggable="false"
+    (load)="loaded.set(true)"
+  />
+
+  <button #closeButton type="button" class="control close" aria-label="Tanca" (click)="closed.emit()">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6 L18 18 M18 6 L6 18" /></svg>
+  </button>
+
+  @if (count() > 1) {
+    <button type="button" class="control side prev" aria-label="Foto anterior" (click)="previous()">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 L8 12 L15 19" /></svg>
+    </button>
+    <button type="button" class="control side next" aria-label="Foto següent" (click)="next()">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5 L16 12 L9 19" /></svg>
+    </button>
+    <p class="counter" aria-live="polite">{{ index() + 1 }} / {{ count() }}</p>
+  }
+</div>

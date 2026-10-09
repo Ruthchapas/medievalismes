@@ -2,7 +2,21 @@
   <h2 class="h2">Galeria</h2>
   <div class="row">
     @for (photo of photos(); track $index) {
-      <div class="thumb" [style]="thumbStyle(photo, $index)"></div>
+      @if (photo) {
+        <button
+          type="button"
+          class="thumb"
+          [style]="thumbStyle(photo, $index)"
+          [attr.aria-label]="'Amplia la foto ' + ($index + 1) + ' de ' + photos().length"
+          (click)="open(photo)"
+        ></button>
+      } @else {
+        <div class="thumb" [style]="thumbStyle(photo, $index)"></div>
+      }
     }
   </div>
+
+  @if (openIndex() !== null) {
+    <app-photo-viewer [photos]="viewable()" [startIndex]="openIndex()!" [label]="label()" (closed)="openIndex.set(null)" />
+  }
 }

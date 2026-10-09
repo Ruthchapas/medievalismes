@@ -30,6 +30,7 @@ export interface Place {
   introText: string;
   contextText: string;
   highlights: PlaceHighlight[];
+  /** Original image URLs; each use (thumbnail, full screen) asks for the size it needs. */
   gallery: string[];
   /** Slugs of nearby places; distances are worked out from the coordinates. */
   nearby: string[];

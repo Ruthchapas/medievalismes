@@ -13,7 +13,7 @@
       <p class="context">{{ p.contextText }}</p>
 
       <app-place-highlights [highlights]="p.highlights" />
-      <app-place-gallery [photos]="p.gallery" />
+      <app-place-gallery [photos]="p.gallery" [label]="p.name" />
       <app-place-nearby [place]="p" />
     </div>
   </article>

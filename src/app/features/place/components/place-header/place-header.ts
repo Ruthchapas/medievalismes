@@ -1,5 +1,5 @@
 import { UpperCasePipe } from '@angular/common';
-import { Component, computed, input, output } from '@angular/core';
+import { Component, computed, DestroyRef, inject, input, output, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Place } from '../../../../core/models/place.model';
 import { BackButton } from '../../../../shared/ui/back-button/back-button';
@@ -39,7 +39,51 @@ export class PlaceHeader {
     return url ? { backgroundImage: `url(${url})` } : {};
   });
 
+  /** A short confirmation ("Enllaç copiat") that fades away on its own. */
+  protected readonly toast = signal<string | null>(null);
+  private toastTimer?: ReturnType<typeof setTimeout>;
+
+  constructor() {
+    inject(DestroyRef).onDestroy(() => clearTimeout(this.toastTimer));
+  }
+
   toggleSaved() {
     this.savedChange.emit(!this.saved());
+  }
+
+  /**
+   * Phones and tablets get their own share sheet (WhatsApp, Messages, AirDrop...).
+   * Where there isn't one — most desktop browsers — the link is copied instead.
+   */
+  protected async share(): Promise<void> {
+    const place = this.place();
+    const data: ShareData = {
+      title: `${place.name} · Medievalismes`,
+      text: place.teaser ?? undefined,
+      url: window.location.href,
+    };
+
+    if (navigator.share && (!navigator.canShare || navigator.canShare(data))) {
+      try {
+        await navigator.share(data);
+      } catch (error) {
+        // Closing the share sheet without choosing anything is not an error.
+        if ((error as DOMException).name !== 'AbortError') this.showToast("No s'ha pogut compartir");
+      }
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(data.url!);
+      this.showToast('Enllaç copiat');
+    } catch {
+      this.showToast("No s'ha pogut copiar l'enllaç");
+    }
+  }
+
+  private showToast(message: string): void {
+    clearTimeout(this.toastTimer);
+    this.toast.set(message);
+    this.toastTimer = setTimeout(() => this.toast.set(null), 2400);
   }
 }

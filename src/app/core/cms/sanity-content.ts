@@ -2,6 +2,7 @@ import { createClient } from '@sanity/client';
 import { Collection } from '../models/collection.model';
 import { Place, PlaceCategory, PlaceHighlight, PlaceIconType } from '../models/place.model';
 import { CMS } from './cms.config';
+import { resized } from './image';
 
 const client = createClient({ ...CMS, useCdn: true });
 
@@ -60,9 +61,6 @@ const isCategory = (value: string): value is PlaceCategory => (CATEGORIES as str
 const isIcon = (value: string | null): value is PlaceIconType => value !== null && (ICONS as string[]).includes(value);
 const isString = (value: string | null): value is string => !!value;
 
-/** Sanity serves images through its CDN and resizes them on request. */
-const sized = (url: string, width: number) => `${url}?w=${width}&auto=format`;
-
 function toHighlight(raw: NonNullable<RawPlace['highlights']>[number]): PlaceHighlight {
   return {
     icon: isIcon(raw.icon) ? raw.icon : 'castell',
@@ -86,11 +84,11 @@ function toPlace(raw: RawPlace): Place {
     categories: (raw.categories ?? []).filter(isCategory),
     routeTag: raw.routeTag ?? undefined,
     teaser: raw.teaser ?? undefined,
-    photoUrl: raw.photoUrl ? sized(raw.photoUrl, 1600) : undefined,
+    photoUrl: raw.photoUrl ? resized(raw.photoUrl, 1600) : undefined,
     introText: raw.introText ?? '',
     contextText: raw.contextText ?? '',
     highlights: (raw.highlights ?? []).map(toHighlight),
-    gallery: (raw.gallery ?? []).filter(isString).map((url) => sized(url, 800)),
+    gallery: (raw.gallery ?? []).filter(isString),
     nearby: (raw.nearby ?? []).filter(isString),
   };
 }
@@ -100,7 +98,7 @@ function toCollection(raw: RawCollection): Collection {
     slug: raw.slug,
     kicker: raw.kicker ?? '',
     title: raw.title,
-    coverPhotoUrl: raw.coverPhotoUrl ? sized(raw.coverPhotoUrl, 1200) : undefined,
+    coverPhotoUrl: raw.coverPhotoUrl ? resized(raw.coverPhotoUrl, 1200) : undefined,
     intro: raw.intro ?? '',
     items: (raw.items ?? []).flatMap((item) =>
       item.placeSlug ? [{ placeSlug: item.placeSlug, highlight: item.highlight ?? '' }] : [],
