@@ -1,0 +1,9 @@
+# Netlify reads this when it builds the project from a repository. Dropping the
+# already-built folder (dist/medievalismes/browser) onto Netlify doesn't need it.
+[build]
+  command = "npm run build"
+  publish = "dist/medievalismes/browser"
+
+[build.environment]
+  # Angular 21 needs Node 20.19+ / 22.12+.
+  NODE_VERSION = "22"
