@@ -85,8 +85,17 @@
   background-position: center;
 }
 
+// A real photo can be bright, so a soft dark fade under the name keeps it readable.
+.photo.has-photo::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(36, 23, 17, 0.7), rgba(36, 23, 17, 0) 62%);
+}
+
 // The blackletter is hard to read small, so it gets more size than the other tags.
 .route-tag {
+  position: relative;
   @include type.blackletter-accent;
   font-size: 1.35rem;
   line-height: 1.2;

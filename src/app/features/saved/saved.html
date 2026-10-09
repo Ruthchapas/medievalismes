@@ -7,7 +7,7 @@
   <div class="grid">
     @for (place of places(); track place!.slug) {
       <a class="card" [routerLink]="['/lloc', place!.slug]">
-        <div class="thumb" [style.background]="place!.photoUrl ? 'url(' + place!.photoUrl + ')' : 'linear-gradient(155deg, #e6d2a8, #b9793e)'">
+        <div class="thumb" [style.background-image]="place!.photoUrl ? 'url(' + place!.photoUrl + ')' : 'linear-gradient(155deg, #e6d2a8, #b9793e)'">
           <div class="badge">
             <svg viewBox="0 0 24 24"><path d="M6,4 H18 V21 L12,16 L6,21 Z" /></svg>
           </div>

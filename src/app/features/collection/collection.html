@@ -1,5 +1,5 @@
 @if (collection(); as c) {
-  <div class="hero" [style.background]="c.coverPhotoUrl ? 'url(' + c.coverPhotoUrl + ')' : 'linear-gradient(160deg, #dcb669, #96524a)'">
+  <div class="hero" [class.has-cover]="c.coverPhotoUrl" [style.background-image]="c.coverPhotoUrl ? 'url(' + c.coverPhotoUrl + ')' : 'linear-gradient(160deg, #dcb669, #96524a)'">
     <a appBackButton routerLink="/descobreix" class="back" aria-label="Torna a Descobreix"></a>
     <span class="kicker">{{ c.kicker }}</span>
     <h1 class="title">{{ c.title }}</h1>
@@ -10,7 +10,7 @@
   @for (row of rows(); track row!.place.slug; let i = $index) {
     <a class="num-row" [routerLink]="['/lloc', row!.place.slug]">
       <span class="num">{{ (i + 1) | number: '2.0' }}</span>
-      <div class="thumb" [style.background]="row!.place.photoUrl ? 'url(' + row!.place.photoUrl + ')' : 'linear-gradient(155deg, #e6d2a8, #b9793e)'"></div>
+      <div class="thumb" [style.background-image]="row!.place.photoUrl ? 'url(' + row!.place.photoUrl + ')' : 'linear-gradient(155deg, #e6d2a8, #b9793e)'"></div>
       <div>
         <p class="name">{{ row!.place.name }}</p>
         <p class="highlight">{{ row!.highlight }}</p>

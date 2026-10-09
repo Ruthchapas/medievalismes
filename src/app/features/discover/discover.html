@@ -4,7 +4,7 @@
   <p class="sec-eyebrow">Col·leccions</p>
   <div class="coll-row">
     @for (c of collections; track c.slug) {
-      <a class="coll-card" [routerLink]="['/coleccio', c.slug]" [style.background]="c.coverPhotoUrl ? 'url(' + c.coverPhotoUrl + ')' : 'linear-gradient(160deg, #dcb669, #96524a)'">
+      <a class="coll-card" [routerLink]="['/coleccio', c.slug]" [style.background-image]="c.coverPhotoUrl ? 'url(' + c.coverPhotoUrl + ')' : 'linear-gradient(160deg, #dcb669, #96524a)'">
         <span>{{ c.title }}</span>
       </a>
     }
@@ -15,7 +15,7 @@
   <p class="sec-eyebrow">{{ group.comarca }}</p>
   @for (place of group.places; track place.slug) {
     <a class="list-card" [routerLink]="['/lloc', place.slug]">
-      <div class="list-thumb" [style.background]="place.photoUrl ? 'url(' + place.photoUrl + ')' : 'linear-gradient(155deg, #e6d2a8, #b9793e)'"></div>
+      <div class="list-thumb" [style.background-image]="place.photoUrl ? 'url(' + place.photoUrl + ')' : 'linear-gradient(155deg, #e6d2a8, #b9793e)'"></div>
       <div>
         <p class="list-name">{{ place.name }}</p>
         <p class="list-meta">{{ place.altitud }}M · {{ place.habitants }} HAB.</p>

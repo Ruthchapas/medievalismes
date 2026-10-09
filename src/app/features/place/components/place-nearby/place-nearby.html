@@ -22,7 +22,7 @@
       <a class="card" [routerLink]="['/lloc', item.place.slug]">
         <div
           class="thumb"
-          [style.background]="item.place.photoUrl ? 'url(' + item.place.photoUrl + ')' : 'linear-gradient(155deg, #cbd3ae, #8b9970)'"
+          [style.background-image]="item.place.photoUrl ? 'url(' + item.place.photoUrl + ')' : 'linear-gradient(155deg, #cbd3ae, #8b9970)'"
         ></div>
         <p class="name">{{ item.place.name }}</p>
         <p class="dist">{{ item.distance }} km</p>
