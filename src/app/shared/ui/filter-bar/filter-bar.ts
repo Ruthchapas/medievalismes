@@ -1,18 +1,16 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { CATEGORY_OPTIONS, FilterService, Suggestion } from '../../../core/services/filter.service';
-import { Chip } from '../chip/chip';
+import { FilterService, Suggestion } from '../../../core/services/filter.service';
 
 @Component({
   selector: 'app-filter-bar',
-  imports: [Chip, RouterLink],
+  imports: [RouterLink],
   templateUrl: './filter-bar.html',
   styleUrl: './filter-bar.scss',
 })
 export class FilterBar {
   private readonly router = inject(Router);
   protected readonly filters = inject(FilterService);
-  protected readonly categories = CATEGORY_OPTIONS;
 
   protected readonly open = signal(false);
   protected readonly activeIndex = signal(-1);

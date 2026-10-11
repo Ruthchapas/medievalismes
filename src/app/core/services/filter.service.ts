@@ -1,14 +1,6 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
-import { Place, PlaceCategory } from '../models/place.model';
+import { Place } from '../models/place.model';
 import { PlaceService } from './place.service';
-
-export type CategoryFilter = 'tots' | PlaceCategory;
-
-export const CATEGORY_OPTIONS: { id: CategoryFilter; label: string }[] = [
-  { id: 'tots', label: 'Tots' },
-  { id: 'patrimoni', label: 'Patrimoni' },
-  { id: 'natura', label: 'Natura' },
-];
 
 export interface Suggestion {
   id: string;
@@ -60,24 +52,17 @@ function splitAroundMatch(label: string, query: string, tier: number) {
   };
 }
 
-/** Search + category state shared by Mapa and Descobreix, so both always agree. */
+/** Search state shared by Mapa and Descobreix, so both always agree. */
 @Injectable({ providedIn: 'root' })
 export class FilterService {
   private readonly placeService = inject(PlaceService);
 
   readonly query = signal('');
-  readonly category = signal<CategoryFilter>('tots');
 
-  readonly isActive = computed(() => this.query().trim() !== '' || this.category() !== 'tots');
+  readonly isActive = computed(() => this.query().trim() !== '');
 
   reset(): void {
     this.query.set('');
-    this.category.set('tots');
-  }
-
-  private inCategory(place: Place): boolean {
-    const category = this.category();
-    return category === 'tots' || place.categories.includes(category);
   }
 
   /** Places for the map and the list: matched by name, or by the start of their comarca/region/route. */
@@ -85,7 +70,6 @@ export class FilterService {
     const query = prepareQuery(this.query());
 
     return this.placeService.getAll().filter((place) => {
-      if (!this.inCategory(place)) return false;
       if (!query) return true;
       if (matchTier(place.name, query) >= 0) return true;
       return [place.comarca, place.regio, place.routeTag ?? ''].some((field) => {
@@ -100,7 +84,7 @@ export class FilterService {
     const query = prepareQuery(this.query());
     if (!query) return [];
 
-    const candidates = this.placeService.getAll().filter((place) => this.inCategory(place));
+    const candidates = this.placeService.getAll();
     const ranked: { tier: number; order: number; suggestion: Suggestion; sortLabel: string }[] = [];
 
     for (const comarca of new Set(candidates.map((place) => place.comarca))) {

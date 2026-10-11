@@ -1,6 +1,6 @@
 import { createClient } from '@sanity/client';
 import { Collection } from '../models/collection.model';
-import { Place, PlaceCategory, PlaceHighlight, PlaceIconType } from '../models/place.model';
+import { Place, PlaceHighlight, PlaceIconType } from '../models/place.model';
 import { CMS } from './cms.config';
 import { resized } from './image';
 
@@ -11,7 +11,7 @@ const FETCH_TIMEOUT_MS = 8000;
 // GROQ returns `null` for anything left empty in the Studio, hence the `| null`s below.
 const PLACES_QUERY = `*[_type == "place" && defined(slug.current) && defined(lat) && defined(lng)] | order(name asc) {
   "slug": slug.current,
-  name, comarca, regio, habitants, altitud, lat, lng, categories, routeTag, teaser, introText, contextText,
+  name, comarca, regio, habitants, altitud, lat, lng, routeTag, teaser, introText, contextText,
   "photoUrl": photo.asset->url,
   "highlights": highlights[]{ icon, name, label, lat, lng },
   "gallery": gallery[].asset->url,
@@ -34,7 +34,6 @@ interface RawPlace {
   altitud: number | null;
   lat: number;
   lng: number;
-  categories: string[] | null;
   routeTag: string | null;
   teaser: string | null;
   introText: string | null;
@@ -54,10 +53,8 @@ interface RawCollection {
   items: { placeSlug: string | null; highlight: string | null }[] | null;
 }
 
-const CATEGORIES: PlaceCategory[] = ['patrimoni', 'natura'];
 const ICONS: PlaceIconType[] = ['castell', 'esglesia', 'mirador', 'sender'];
 
-const isCategory = (value: string): value is PlaceCategory => (CATEGORIES as string[]).includes(value);
 const isIcon = (value: string | null): value is PlaceIconType => value !== null && (ICONS as string[]).includes(value);
 const isString = (value: string | null): value is string => !!value;
 
@@ -81,7 +78,6 @@ function toPlace(raw: RawPlace): Place {
     altitud: raw.altitud ?? 0,
     lat: raw.lat,
     lng: raw.lng,
-    categories: (raw.categories ?? []).filter(isCategory),
     routeTag: raw.routeTag ?? undefined,
     teaser: raw.teaser ?? undefined,
     photoUrl: raw.photoUrl ? resized(raw.photoUrl, 1600) : undefined,

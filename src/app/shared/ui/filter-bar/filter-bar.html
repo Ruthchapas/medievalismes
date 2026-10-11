@@ -49,17 +49,3 @@
   </div>
   <a routerLink="/perfil" class="avatar-btn" aria-label="Perfil"></a>
 </div>
-
-<div class="chips" role="group" aria-label="Categories">
-  @for (c of categories; track c.id) {
-    <button
-      type="button"
-      appChip
-      [active]="filters.category() === c.id"
-      [attr.aria-pressed]="filters.category() === c.id"
-      (click)="filters.category.set(c.id)"
-    >
-      {{ c.label }}
-    </button>
-  }
-</div>

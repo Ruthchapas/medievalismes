@@ -33,20 +33,6 @@ export const place = defineType({
     defineField({ name: 'habitants', title: 'Habitants', type: 'number', group: 'basic', validation: (rule) => rule.min(0).integer() }),
     defineField({ name: 'altitud', title: 'Altitud (m)', type: 'number', group: 'basic' }),
     defineField({
-      name: 'categories',
-      title: 'Categories',
-      type: 'array',
-      group: 'basic',
-      description: 'Serveixen per als filtres "Patrimoni" i "Natura".',
-      of: [defineArrayMember({ type: 'string' })],
-      options: {
-        list: [
-          { title: 'Patrimoni', value: 'patrimoni' },
-          { title: 'Natura', value: 'natura' },
-        ],
-      },
-    }),
-    defineField({
       name: 'routeTag',
       title: 'Etiqueta de ruta',
       type: 'string',

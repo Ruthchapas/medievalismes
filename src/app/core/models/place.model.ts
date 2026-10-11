@@ -1,7 +1,5 @@
 export type PlaceIconType = 'castell' | 'esglesia' | 'mirador' | 'sender';
 
-export type PlaceCategory = 'patrimoni' | 'natura';
-
 export interface PlaceHighlight {
   icon: PlaceIconType;
   /** Short name, used on the map ("Sant Miquel Arcàngel"). */
@@ -22,7 +20,6 @@ export interface Place {
   altitud: number;
   lat: number;
   lng: number;
-  categories: PlaceCategory[];
   routeTag?: string;
   photoUrl?: string;
   /** Short one-liner for list/grid cards — distinct from introText. */
