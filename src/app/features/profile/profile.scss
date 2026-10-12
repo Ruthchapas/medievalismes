@@ -17,11 +17,16 @@
 }
 
 .avatar {
+  @include type.heading-3;
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: var(--color-terracota);
+  background: var(--color-blau);
   border: 1px solid var(--color-ink);
+  color: var(--color-calc);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
 }
 
@@ -35,6 +40,149 @@
   @include type.meta;
   color: var(--color-ink-soft);
   margin: 2px 0 0;
+  overflow-wrap: anywhere;
+}
+
+.note,
+.error {
+  @include type.body-sm;
+  padding: 0 var(--gutter) var(--space-4);
+  margin: 0;
+}
+
+.error {
+  color: var(--color-terracota-text);
+}
+
+.panel {
+  padding: var(--space-4) var(--gutter) var(--space-5);
+
+  h2 {
+    @include type.heading-2;
+    margin: 0 0 var(--space-2);
+  }
+}
+
+.lead {
+  @include type.body-sm;
+  color: var(--color-ink-soft);
+  margin: 0 0 var(--space-4);
+}
+
+.google {
+  @include type.body-sm;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: var(--tap);
+  padding: var(--space-3) var(--space-4);
+  background: #fff;
+  color: var(--color-ink);
+  border: 1.5px solid var(--color-ink);
+  cursor: pointer;
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  &:active {
+    opacity: 0.75;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
+}
+
+.or {
+  @include type.meta;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin: var(--space-4) 0;
+  color: var(--color-ink-soft);
+
+  &::before,
+  &::after {
+    content: '';
+    flex: 1;
+    border-top: 1px solid var(--color-border);
+  }
+}
+
+.field-label {
+  @include type.meta;
+  display: block;
+  margin-bottom: var(--space-2);
+  color: var(--color-ink-soft);
+}
+
+.field-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+
+  input {
+    @include type.body;
+    flex: 1;
+    min-width: 0;
+    min-height: var(--tap);
+    padding: var(--space-2) var(--space-3);
+    background: var(--color-calc);
+    color: var(--color-ink);
+    border: 1.5px solid var(--color-ink);
+    border-radius: 0;
+    // 16px or more keeps iOS from zooming in on focus.
+    font-size: 1rem;
+
+    &:focus-visible {
+      outline: 2px solid var(--color-blau);
+      outline-offset: 2px;
+    }
+  }
+
+  button[appButton] {
+    min-height: var(--tap);
+  }
+}
+
+.text-action {
+  @include type.body-sm;
+  display: block;
+  min-height: var(--tap);
+  padding: 0;
+  background: none;
+  border: none;
+  color: var(--color-blau);
+  text-decoration: underline;
+  text-align: left;
+  cursor: pointer;
+
+  &.muted {
+    color: var(--color-ink-soft);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
+}
+
+.legal {
+  @include type.meta;
+  margin: var(--space-4) 0 0;
+  color: var(--color-ink-soft);
+  line-height: 1.6;
+
+  a {
+    color: var(--color-blau);
+  }
+}
+
+.danger {
+  padding: var(--space-4) var(--gutter) 0;
 }
 
 .row {
@@ -44,6 +192,12 @@
   min-height: 56px;
   padding: var(--space-3) var(--gutter);
   border-top: 1px solid var(--color-border);
+  color: inherit;
+  text-decoration: none;
+
+  &:last-of-type {
+    border-bottom: 1px solid var(--color-border);
+  }
 
   span:first-child {
     @include type.body;
@@ -60,4 +214,17 @@
   text-align: center;
   color: var(--color-ink-soft);
   padding: var(--space-6) var(--gutter);
+
+  a {
+    color: inherit;
+  }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
 }

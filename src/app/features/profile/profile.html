@@ -1,32 +1,132 @@
 <a appBackButton routerLink="/mapa" class="back" aria-label="Torna al mapa"></a>
 
 <div class="top">
-  <div class="avatar"></div>
+  <div class="avatar" [style.background]="auth.avatarColor()" aria-hidden="true">{{ auth.initials() }}</div>
   <div>
-    <p class="name">El teu perfil</p>
-    <p class="email">Sense compte — navegació lliure</p>
+    <p class="name">{{ auth.name() ?? 'El teu perfil' }}</p>
+    <p class="email">{{ auth.user()?.email ?? 'Sense compte — navegació lliure' }}</p>
   </div>
 </div>
 
-<div class="row">
-  <span>Idioma</span>
-  <span class="chev">Català ›</span>
-</div>
-<div class="row">
-  <span>Notificacions</span>
-  <span class="chev">›</span>
-</div>
-<div class="row">
+@if (auth.error(); as message) {
+  <p class="error" role="alert">{{ message }}</p>
+}
+
+@if (!auth.ready()) {
+  <p class="note">Un moment…</p>
+} @else if (auth.user()) {
+  <section class="panel">
+    @if (editingName()) {
+      <form class="field-row" (submit)="saveName($event)">
+        <label class="sr-only" for="name-input">El teu nom</label>
+        <input
+          id="name-input"
+          type="text"
+          autocomplete="name"
+          maxlength="60"
+          [value]="nameDraft()"
+          (input)="typed(nameDraft, $event)"
+        />
+        <button appButton type="submit" [disabled]="auth.busy()">Desa</button>
+      </form>
+    } @else {
+      <button type="button" class="text-action" (click)="startEditingName()">Canvia el nom</button>
+    }
+    <button type="button" class="text-action" [disabled]="auth.busy()" (click)="auth.signOut()">Tanca la sessió</button>
+  </section>
+} @else if (auth.needsEmailConfirm()) {
+  <section class="panel">
+    <h2>Gairebé hi som</h2>
+    <p class="lead">Has obert l'enllaç en un altre dispositiu. Confirma el correu al qual el vas demanar per acabar d'entrar.</p>
+    <form class="field-row" (submit)="confirmLink($event)">
+      <label class="sr-only" for="confirm-email">El teu correu</label>
+      <input
+        id="confirm-email"
+        type="email"
+        autocomplete="email"
+        inputmode="email"
+        placeholder="El teu correu"
+        [value]="email()"
+        (input)="typed(email, $event)"
+      />
+      <button appButton type="submit" [disabled]="auth.busy() || !email()">Entra</button>
+    </form>
+  </section>
+} @else if (auth.linkSentTo(); as sentTo) {
+  <section class="panel">
+    <h2>Revisa el correu</h2>
+    <p class="lead">
+      Hem enviat un enllaç a <strong>{{ sentTo }}</strong
+      >. Toca'l i entraràs. Si no el veus, mira la carpeta de correu brossa.
+    </p>
+    <button type="button" class="text-action" (click)="useAnotherEmail()">Fer servir un altre correu</button>
+  </section>
+} @else {
+  <section class="panel">
+    <h2>Desa els teus llocs a tot arreu</h2>
+    <p class="lead">
+      Inicia la sessió i els llocs desats et seguiran del mòbil a la tauleta. No cal per navegar ni per veure fitxes.
+    </p>
+
+    <button type="button" class="google" [disabled]="auth.busy()" (click)="auth.signInWithGoogle()">
+      <svg viewBox="0 0 48 48" aria-hidden="true">
+        <path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z" />
+        <path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17.5z" />
+        <path fill="#FBBC05" d="M10.5 28.7c-.5-1.5-.8-3-.8-4.7s.3-3.2.8-4.7l-7.9-6.1C.9 16.4 0 20.1 0 24s.9 7.6 2.6 10.8l7.9-6.1z" />
+        <path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.5-5.8c-2.1 1.4-4.9 2.3-8.4 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z" />
+      </svg>
+      Continua amb Google
+    </button>
+
+    <p class="or"><span>o</span></p>
+
+    <form (submit)="sendLink($event)">
+      <label class="field-label" for="email-input">Rep un enllaç al correu</label>
+      <div class="field-row">
+        <input
+          id="email-input"
+          type="email"
+          autocomplete="email"
+          inputmode="email"
+          placeholder="El teu correu"
+          [value]="email()"
+          (input)="typed(email, $event)"
+        />
+        <button appButton type="submit" [disabled]="auth.busy() || !email()">Envia</button>
+      </div>
+    </form>
+
+    <p class="legal">
+      En entrar acceptes que guardem el teu correu, el teu nom i els teus llocs desats. Més informació a la
+      <a routerLink="/privadesa">política de privadesa</a>.
+    </p>
+  </section>
+}
+
+<a class="row" routerLink="/desats">
   <span>Llocs desats</span>
   <span class="chev">{{ savedCount() }} ›</span>
-</div>
-<div class="row">
-  <span>Sobre Medievalismes</span>
+</a>
+<a class="row" href="https://www.instagram.com/medievalismes" target="_blank" rel="noopener">
+  <span>Segueix-nos a Instagram</span>
   <span class="chev">›</span>
-</div>
-<div class="row">
-  <span>Segueix-nos a IG / TikTok</span>
-  <span class="chev">›</span>
-</div>
+</a>
 
-<p class="foot">MEDIEVALISMES · DIVULGACIÓ DEL PATRIMONI CULTURAL</p>
+@if (auth.user()) {
+  <section class="danger">
+    @if (confirmingDelete()) {
+      <p class="lead">Això elimina el teu compte i els llocs desats al núvol. No es pot desfer.</p>
+      <div class="field-row">
+        <button appButton variant="secondary" type="button" [disabled]="auth.busy()" (click)="deleteAccount()">Sí, elimina</button>
+        <button appButton variant="link" type="button" (click)="confirmingDelete.set(false)">Cancel·la</button>
+      </div>
+    } @else {
+      <button type="button" class="text-action muted" (click)="confirmingDelete.set(true)">Elimina el meu compte</button>
+    }
+  </section>
+}
+
+<p class="foot">
+  MEDIEVALISMES · DIVULGACIÓ DEL PATRIMONI CULTURAL ·
+  <a routerLink="/privadesa">PRIVADESA</a>
+</p>

@@ -1,5 +1,6 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../../core/auth/auth.service';
 import { FilterService, Suggestion } from '../../../core/services/filter.service';
 
 @Component({
@@ -11,6 +12,7 @@ import { FilterService, Suggestion } from '../../../core/services/filter.service
 export class FilterBar {
   private readonly router = inject(Router);
   protected readonly filters = inject(FilterService);
+  protected readonly auth = inject(AuthService);
 
   protected readonly open = signal(false);
   protected readonly activeIndex = signal(-1);

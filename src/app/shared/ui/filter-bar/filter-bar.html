@@ -47,5 +47,5 @@
       </ul>
     }
   </div>
-  <a routerLink="/perfil" class="avatar-btn" aria-label="Perfil"></a>
+  <a routerLink="/perfil" class="avatar-btn" [style.background]="auth.avatarColor()" aria-label="Perfil">{{ auth.initials() }}</a>
 </div>

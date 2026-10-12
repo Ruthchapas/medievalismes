@@ -1,0 +1,38 @@
+<a appBackButton routerLink="/perfil" class="back" aria-label="Torna al perfil"></a>
+
+<article class="text">
+  <h1>Privadesa</h1>
+
+  <h2>Si no inicies la sessió</h2>
+  <p>
+    Pots fer servir tota l'app sense compte. Els llocs que desis es queden només al teu dispositiu, dins del navegador.
+    No fem servir analítica ni galetes de seguiment.
+  </p>
+  <p>
+    Per mostrar el mapa, les fotos i els textos, l'app es connecta a serveis externs (mapes d'OpenStreetMap i
+    OpenFreeMap, i el gestor de continguts Sanity). Com en qualsevol web, aquests serveis veuen la teva adreça IP.
+  </p>
+
+  <h2>Si inicies la sessió</h2>
+  <p>
+    Guardem només el teu correu, el teu nom (el de Google si entres amb Google, o el que triïs) i la llista dels llocs
+    que has desat. No demanem ni guardem contrasenya, foto ni cap altra dada.
+  </p>
+  <p>
+    Les fem servir per mantenir la sessió oberta i perquè els teus llocs desats et segueixin entre dispositius. No les
+    fem servir per a publicitat ni les cedim a tercers.
+  </p>
+  <p>
+    El servei d'inici de sessió i la base de dades els ofereix Google (Firebase). Els llocs desats es guarden en
+    servidors d'Europa.
+  </p>
+
+  <h2>Els teus drets</h2>
+  <p>
+    Pots tancar la sessió o eliminar el teu compte quan vulguis des del
+    <a routerLink="/perfil">Perfil</a>. En eliminar-lo s'esborren el compte i els llocs desats.
+  </p>
+  @if (contact) {
+    <p>Per a qualsevol altra consulta, escriu-nos a <a [href]="'mailto:' + contact">{{ contact }}</a>.</p>
+  }
+</article>

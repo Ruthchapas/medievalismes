@@ -149,7 +149,12 @@ input {
 }
 
 .avatar-btn {
-  display: block;
+  @include type.heading-3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-calc);
+  text-decoration: none;
   width: 44px;
   height: 44px;
   flex-shrink: 0;

@@ -1,0 +1,33 @@
+@use 'app/design/typography' as type;
+
+:host {
+  display: block;
+  padding-bottom: var(--space-9);
+}
+
+.back {
+  margin: var(--space-4) 0 0 var(--gutter);
+}
+
+.text {
+  padding: var(--space-5) var(--gutter) 0;
+
+  h1 {
+    @include type.heading-1;
+    margin: 0 0 var(--space-4);
+  }
+
+  h2 {
+    @include type.heading-3;
+    margin: var(--space-5) 0 var(--space-2);
+  }
+
+  p {
+    @include type.body;
+    margin: 0 0 var(--space-3);
+  }
+
+  a {
+    color: var(--color-blau);
+  }
+}

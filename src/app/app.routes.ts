@@ -23,6 +23,11 @@ export const routes: Routes = [
     title: 'Perfil · Medievalismes',
   },
   {
+    path: 'privadesa',
+    loadComponent: () => import('./features/privacy/privacy').then((m) => m.Privacy),
+    title: 'Privadesa · Medievalismes',
+  },
+  {
     path: 'lloc/:slug',
     loadComponent: () => import('./features/place/place').then((m) => m.Place),
     title: 'Medievalismes',
