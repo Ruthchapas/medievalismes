@@ -25,4 +25,12 @@ export class Place {
   });
 
   protected readonly place = computed(() => this.placeService.getBySlug(this.slug()));
+
+  /** "El relat" is written in the Studio with blank lines between paragraphs. */
+  protected readonly story = computed(() =>
+    (this.place()?.contextText ?? '')
+      .split(/\n\s*\n/)
+      .map((paragraph) => paragraph.trim())
+      .filter(Boolean),
+  );
 }

@@ -19,17 +19,24 @@
   margin: 0;
 }
 
+.story {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  // Sits closer to the intro than the other sections do.
+  margin-top: calc(var(--space-3) * -1);
+}
+
+// The narrative can run to several paragraphs, so it reads in upright type.
 .context {
   font-size: var(--fs-body-sm);
-  font-style: italic;
-  opacity: 0.85;
-  margin-top: calc(var(--space-2) * -1);
+  opacity: 0.9;
 }
 
 .eyebrow-sm {
   @include type.eyebrow;
   color: var(--color-oliva);
-  margin: calc(var(--space-4) * -1) 0 0;
+  margin: 0;
 }
 
 .not-found {

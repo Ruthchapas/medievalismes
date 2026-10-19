@@ -16,7 +16,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import * as maplibregl from 'maplibre-gl';
 import { map as mapOperator } from 'rxjs/operators';
-import { PlaceIconType } from '../../core/models/place.model';
+import { Place, PlaceHighlight, PlaceIconType } from '../../core/models/place.model';
 import { FilterService } from '../../core/services/filter.service';
 import { PlaceService } from '../../core/services/place.service';
 import { createBrandMap, createPinElement } from '../../shared/map/brand-map';
@@ -27,6 +27,8 @@ import { PlaceIcon } from '../../shared/ui/place-icon/place-icon';
 const LABELS_MIN_ZOOM = 10.5;
 /** From this zoom you're in the village, so the highlighted spots appear. */
 const HIGHLIGHTS_MIN_ZOOM = 14.5;
+/** How close to go when sent to a single highlight. */
+const SPOT_ZOOM = 17;
 
 interface SelectedHighlight {
   name: string;
@@ -56,10 +58,14 @@ export class Map {
   /** The highlight whose card is open. */
   protected readonly selected = signal<SelectedHighlight | null>(null);
 
-  /** `/mapa?lloc=rupit` opens the map framing that place and its highlights. */
-  private readonly focusSlug = toSignal(this.route.queryParamMap.pipe(mapOperator((params) => params.get('lloc'))), {
-    initialValue: null,
-  });
+  /**
+   * `/mapa?lloc=rupit` opens the map framing that place and its highlights;
+   * `&punt=Sant Miquel Arcàngel` goes straight to one of them and opens its card.
+   */
+  private readonly focus = toSignal(
+    this.route.queryParamMap.pipe(mapOperator((params) => ({ slug: params.get('lloc'), spot: params.get('punt') }))),
+    { initialValue: { slug: null as string | null, spot: null as string | null } },
+  );
 
   private map?: maplibregl.Map;
   private readonly pins = new globalThis.Map<string, { element: HTMLElement; lngLat: [number, number] }>();
@@ -70,25 +76,36 @@ export class Map {
     afterNextRender(() => this.initMap());
     effect(() => this.syncPins(this.filters.places().map((place) => place.slug)));
     effect(() => {
-      const slug = this.focusSlug();
-      if (slug) this.focusPlace(slug);
+      const { slug, spot } = this.focus();
+      if (slug) this.focusPlace(slug, spot);
     });
   }
 
   private initMap(): void {
-    const focus = this.focusSlug();
+    const { slug: focus, spot } = this.focus();
+    const target = focus ? this.findHighlight(focus, spot) : undefined;
     const map = createBrandMap({
       container: this.mapContainer().nativeElement,
-      // Open on the place we were sent to, or framing every place; either way with
+      // Open on the highlight or place we were sent to, or framing every place; either way with
       // room at the sides for the names under the pins.
-      bounds: (focus && this.boundsAround(focus)) || this.allPlacesBounds(),
-      fitBoundsOptions: focus
-        ? { padding: this.focusPadding, maxZoom: 16.5 }
-        : { padding: { top: 150, bottom: 130, left: 110, right: 110 }, maxZoom: 13 },
+      ...(target
+        ? { center: [target.highlight.lng!, target.highlight.lat!] as [number, number], zoom: SPOT_ZOOM }
+        : {
+            bounds: (focus && this.boundsAround(focus)) || this.allPlacesBounds(),
+            fitBoundsOptions: focus
+              ? { padding: this.focusPadding, maxZoom: 16.5 }
+              : { padding: { top: 150, bottom: 130, left: 110, right: 110 }, maxZoom: 13 },
+          }),
       maxZoom: 19,
       attributionControl: { compact: true },
     });
     this.map = map;
+
+    if (target) {
+      // Leaves room under the highlight for its card.
+      map.jumpTo({ center: [target.highlight.lng!, target.highlight.lat!], zoom: SPOT_ZOOM, padding: this.spotPadding });
+      this.showHighlight(target.place, target.highlight);
+    }
 
     map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'bottom-right');
     map.on('click', () => this.selected.set(null));
@@ -114,13 +131,7 @@ export class Map {
         marker.addEventListener('click', (event) => {
           // Otherwise the click would also reach the map and close the card straight away.
           event.stopPropagation();
-          this.selected.set({
-            name: highlight.name,
-            label: highlight.label,
-            icon: highlight.icon,
-            placeName: place.name,
-            placeSlug: place.slug,
-          });
+          this.showHighlight(place, highlight);
         });
         new maplibregl.Marker({ element: marker, anchor: 'center' })
           .setLngLat([highlight.lng, highlight.lat])
@@ -166,6 +177,26 @@ export class Map {
   }
 
   private readonly focusPadding = { top: 170, bottom: 230, left: 90, right: 90 };
+  private readonly spotPadding = { top: 120, bottom: 260, left: 40, right: 40 };
+
+  private showHighlight(place: Place, highlight: PlaceHighlight): void {
+    this.selected.set({
+      name: highlight.name,
+      label: highlight.label,
+      icon: highlight.icon,
+      placeName: place.name,
+      placeSlug: place.slug,
+    });
+  }
+
+  /** A highlight by name, if it has a location to go to. */
+  private findHighlight(slug: string, spot: string | null) {
+    const place = this.placeService.getBySlug(slug);
+    const highlight = spot ? place?.highlights.find((item) => item.name === spot) : undefined;
+    return place && highlight && highlight.lat !== undefined && highlight.lng !== undefined
+      ? { place, highlight }
+      : undefined;
+  }
 
   private allPlacesBounds(): maplibregl.LngLatBounds {
     const bounds = new maplibregl.LngLatBounds();
@@ -185,7 +216,19 @@ export class Map {
     return bounds;
   }
 
-  private focusPlace(slug: string): void {
+  private focusPlace(slug: string, spot: string | null): void {
+    const target = this.findHighlight(slug, spot);
+    if (this.map && target) {
+      this.showHighlight(target.place, target.highlight);
+      this.map.flyTo({
+        center: [target.highlight.lng!, target.highlight.lat!],
+        zoom: SPOT_ZOOM,
+        padding: this.spotPadding,
+        duration: 900,
+      });
+      return;
+    }
+
     const bounds = this.boundsAround(slug);
     if (!this.map || !bounds) return;
     this.selected.set(null);

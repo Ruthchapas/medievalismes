@@ -68,6 +68,12 @@
 .spot__text {
   @include type.body-sm;
   color: var(--color-ink);
+  // The full description is on the fitxa; the card only needs the gist, and stays clear of the nav.
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
 }
 
 .spot__link {

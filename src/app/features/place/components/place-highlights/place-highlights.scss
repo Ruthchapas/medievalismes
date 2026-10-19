@@ -2,31 +2,105 @@
 
 .h2 {
   @include type.heading-2;
-  margin: 0 0 var(--space-4);
+  margin: 0 0 var(--space-2);
 }
 
 .list {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
 }
 
 .item {
+  border-top: 1px solid var(--color-border);
+
+  &:last-child {
+    border-bottom: 1px solid var(--color-border);
+  }
+}
+
+.head {
   display: flex;
   align-items: center;
   gap: var(--space-3);
+  width: 100%;
+  min-height: 52px;
+  padding: var(--space-2) 0;
+  background: none;
+  border: none;
+  color: var(--color-ink);
+  text-align: left;
+  cursor: pointer;
 
-  app-place-icon {
-    width: 22px;
-    height: 22px;
-    flex-shrink: 0;
+  &:focus-visible {
+    outline: 2px solid var(--color-blau);
+    outline-offset: 2px;
   }
 
-  span {
-    @include type.body;
-    font-size: var(--fs-body-sm);
+  app-place-icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+  }
+}
+
+.name {
+  @include type.body;
+  flex: 1;
+  font-weight: 600;
+}
+
+.chevron {
+  @include type.heading-2;
+  line-height: 1;
+  color: var(--color-ink-soft);
+  transition: transform var(--dur-base) var(--ease-soft);
+}
+
+.open .chevron {
+  transform: rotate(90deg);
+}
+
+// Opens by animating the row height from nothing to its natural size.
+.panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--dur-base) var(--ease-soft);
+}
+
+.open .panel {
+  grid-template-rows: 1fr;
+}
+
+.panel-inner {
+  overflow: hidden;
+  // Lines the text up under the name, past the drawing.
+  padding-left: calc(24px + var(--space-3));
+}
+
+.text {
+  @include type.body-sm;
+  margin: 0 0 var(--space-2);
+}
+
+.map-link {
+  @include type.eyebrow;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap);
+  margin-bottom: var(--space-2);
+  color: var(--color-terracota-text);
+  text-decoration: none;
+
+  &:focus-visible {
+    outline: 2px solid var(--color-blau);
+    outline-offset: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel,
+  .chevron {
+    transition: none;
   }
 }

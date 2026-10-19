@@ -32,8 +32,9 @@ export const highlight = defineType({
     defineField({
       name: 'label',
       title: 'Descripció',
-      type: 'string',
-      description: 'La frase de la llista "Punts destacats". Ex.: "El carrer del Fossar, de forta inclinació".',
+      type: 'text',
+      rows: 3,
+      description: 'El text de la llista "Punts destacats": pot ser una o dues frases.',
       validation: (rule) => rule.required(),
     }),
     defineField({

@@ -21,26 +21,26 @@ export const MOCK_PLACES: Record<string, Place> = {
     introText:
       "Pocs pobles han dut a terme una tasca de preservació dels edificis tan important com la que ha fet Rupit al llarg dels anys. El conjunt, format majoritàriament per cases dels segles XVI i XVII, l'ha convertit sens dubte en un dels més pintorescos del país.",
     contextText:
-      "S'ubica al Collsacabra, un altiplà salvatge al nord-est de la Plana de Vic, abrupte i ple de cingleres. Visitar-lo durant la tardor és tota una experiència que, per molt que passi el temps, sempre recordes.",
+      "S’ubica al Collsacabra, un altiplà salvatge al nord-est de la Plana de Vic, abrupte i ple de cingleres. Visitar-lo durant la tardor és tota una experiència que, per molt que passi el temps, sempre recordes. L'últim cop que hi vaig anar, a mitjans d’un fred mes de novembre, recórrer amb cotxe la carretera que connecta Tavertet amb Rupit em feia sentir com si m’endinsés al cor del bosc, a l'origen del món. A primera hora del matí, aquell indret era l’imperi del silenci.\n\nRupit, però, és millor evitar-lo a les hores punta, especialment els caps de setmana. És un poble molt conegut pels catalans, que històricament l’han convertit en una destinació popular, tant perquè és punt de partida de destacades rutes de senderisme com perquè ofereix tot allò que necessita un barceloní per sentir que ha fugit de la ciutat durant un diumenge. En arribar, però, descobreix que no és l’únic que ha tingut aquella mateixa idea.\n\nCal dir que el turisme també ha comportat alguna cosa força positiva: la regulació de l’accés al poble, amb un gran aparcament a l’entrada, i la creació d’un espai lliure de cotxes. Això permet apreciar millor la bellesa de les façanes de pedra i posa en valor l'arquitectura tradicional.",
     highlights: [
       {
         icon: 'castell',
         name: 'Carrer del Fossar',
-        label: 'El carrer del Fossar, de forta inclinació',
+        label: "El carrer del Fossar, de forta inclinació, on el paviment és la mateixa roca repicada. Pujar-hi és gairebé com caminar per la mateixa pedra sobre la qual s’assenta el poble.",
         lat: 42.02416,
         lng: 2.4657,
       },
       {
         icon: 'esglesia',
         name: 'Sant Miquel Arcàngel',
-        label: "L'església de Sant Miquel Arcàngel des de la plaça Major",
+        label: "La visió de l’església de Sant Miquel Arcàngel des de la plaça Major, una estampa que resumeix a la perfecció l’essència del barroc rural català.",
         lat: 42.02382,
         lng: 2.46503,
       },
       {
         icon: 'mirador',
         name: 'Santa Magdalena',
-        label: "L'ermita de Santa Magdalena",
+        label: "La curta excursió a peu fins a l’ermita de Santa Magdalena, des d’on es pot contemplar l’skyline del poble.",
         lat: 42.02247,
         lng: 2.46627,
       },

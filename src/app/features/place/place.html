@@ -9,10 +9,16 @@
     <div class="body">
       <p class="intro">{{ p.introText }}</p>
 
-      <p class="eyebrow-sm">El relat</p>
-      <p class="context">{{ p.contextText }}</p>
+      @if (story().length) {
+        <div class="story">
+          <p class="eyebrow-sm">El relat</p>
+          @for (paragraph of story(); track $index) {
+            <p class="context">{{ paragraph }}</p>
+          }
+        </div>
+      }
 
-      <app-place-highlights [highlights]="p.highlights" />
+      <app-place-highlights [highlights]="p.highlights" [placeSlug]="p.slug" />
       <app-place-gallery [photos]="p.gallery" [label]="p.name" />
       <app-place-nearby [place]="p" />
     </div>

@@ -1,9 +1,34 @@
 <h2 class="h2">Punts destacats</h2>
 <ul class="list">
-  @for (item of highlights(); track item.label) {
-    <li class="item">
-      <app-place-icon [type]="item.icon" />
-      <span>{{ item.label }}</span>
+  @for (item of highlights(); track item.name; let i = $index) {
+    <li class="item" [class.open]="isOpen(i)">
+      <button
+        type="button"
+        class="head"
+        [attr.aria-expanded]="isOpen(i)"
+        [attr.aria-controls]="'highlight-' + uid + '-' + i"
+        (click)="toggle(i)"
+      >
+        <app-place-icon [type]="item.icon" />
+        <strong class="name">{{ item.name }}</strong>
+        <span class="chevron" aria-hidden="true">›</span>
+      </button>
+
+      <div class="panel" [id]="'highlight-' + uid + '-' + i" role="region" [attr.inert]="isOpen(i) ? null : ''">
+        <div class="panel-inner">
+          <p class="text">{{ item.label }}</p>
+          @if (hasLocation(item)) {
+            <a
+              class="map-link"
+              routerLink="/mapa"
+              [queryParams]="{ lloc: placeSlug(), punt: item.name }"
+              (click)="openMap()"
+            >
+              Veure-ho al mapa ›
+            </a>
+          }
+        </div>
+      </div>
     </li>
   }
 </ul>
