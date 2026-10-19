@@ -4,6 +4,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { PlaceService } from '../../core/services/place.service';
 import { SavedService } from '../../core/services/saved.service';
+import { RichTextView } from '../../shared/ui/rich-text/rich-text';
 import { PlaceGallery } from './components/place-gallery/place-gallery';
 import { PlaceHeader } from './components/place-header/place-header';
 import { PlaceHighlights } from './components/place-highlights/place-highlights';
@@ -11,7 +12,7 @@ import { PlaceNearby } from './components/place-nearby/place-nearby';
 
 @Component({
   selector: 'app-place',
-  imports: [RouterLink, PlaceHeader, PlaceHighlights, PlaceGallery, PlaceNearby],
+  imports: [RouterLink, PlaceHeader, PlaceHighlights, PlaceGallery, PlaceNearby, RichTextView],
   templateUrl: './place.html',
   styleUrl: './place.scss',
 })
@@ -25,12 +26,4 @@ export class Place {
   });
 
   protected readonly place = computed(() => this.placeService.getBySlug(this.slug()));
-
-  /** "El relat" is written in the Studio with blank lines between paragraphs. */
-  protected readonly story = computed(() =>
-    (this.place()?.contextText ?? '')
-      .split(/\n\s*\n/)
-      .map((paragraph) => paragraph.trim())
-      .filter(Boolean),
-  );
 }

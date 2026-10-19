@@ -1,0 +1,15 @@
+@for (paragraph of paragraphs(); track $index) {
+  <p>
+    @for (span of paragraph; track $index) {
+      @if (span.bold && span.italic) {
+        <strong><em>{{ span.text }}</em></strong>
+      } @else if (span.bold) {
+        <strong>{{ span.text }}</strong>
+      } @else if (span.italic) {
+        <em>{{ span.text }}</em>
+      } @else {
+        {{ span.text }}
+      }
+    }
+  </p>
+}

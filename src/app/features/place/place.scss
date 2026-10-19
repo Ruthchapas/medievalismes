@@ -13,24 +13,12 @@
   gap: var(--space-6);
 }
 
-.intro,
-.context {
-  @include type.body;
-  margin: 0;
-}
-
 .story {
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
   // Sits closer to the intro than the other sections do.
   margin-top: calc(var(--space-3) * -1);
-}
-
-// The narrative can run to several paragraphs, so it reads in upright type.
-.context {
-  font-size: var(--fs-body-sm);
-  opacity: 0.9;
 }
 
 .eyebrow-sm {

@@ -1,5 +1,22 @@
 import { defineArrayMember, defineField, defineType } from 'sanity';
 
+/**
+ * A paragraph of text where words can be put in bold or italics (select them and use the toolbar).
+ * Nothing else is offered — no headings, lists or quotes — so every fitxa keeps the same look.
+ */
+const formattedParagraph = defineArrayMember({
+  type: 'block',
+  styles: [{ title: 'Normal', value: 'normal' }],
+  lists: [],
+  marks: {
+    decorators: [
+      { title: 'Negreta', value: 'strong' },
+      { title: 'Cursiva', value: 'em' },
+    ],
+    annotations: [],
+  },
+});
+
 /** A village, monument or site: one fitxa in the app. */
 export const place = defineType({
   name: 'place',
@@ -47,8 +64,21 @@ export const place = defineType({
       description: 'Per a les llistes de Descobreix. Una sola línia.',
       validation: (rule) => rule.max(80),
     }),
-    defineField({ name: 'introText', title: 'Introducció', type: 'text', rows: 5, group: 'text' }),
-    defineField({ name: 'contextText', title: 'El relat', type: 'text', rows: 6, group: 'text' }),
+    defineField({
+      name: 'introText',
+      title: 'Introducció',
+      type: 'array',
+      group: 'text',
+      of: [formattedParagraph],
+    }),
+    defineField({
+      name: 'contextText',
+      title: 'El relat',
+      type: 'array',
+      group: 'text',
+      description: 'Un paràgraf per bloc: prem Retorn per començar-ne un de nou.',
+      of: [formattedParagraph],
+    }),
     defineField({
       name: 'lat',
       title: 'Latitud',
@@ -71,14 +101,6 @@ export const place = defineType({
       group: 'map',
       description: 'Surten a la fitxa i, si tenen ubicació, dibuixats al mapa en acostar-s\'hi.',
       of: [defineArrayMember({ type: 'highlight' })],
-    }),
-    defineField({
-      name: 'nearby',
-      title: 'Llocs a prop',
-      type: 'array',
-      group: 'map',
-      description: 'Les distàncies es calculen soles a partir de les ubicacions.',
-      of: [defineArrayMember({ type: 'reference', to: [{ type: 'place' }] })],
     }),
     defineField({
       name: 'photo',

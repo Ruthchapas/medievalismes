@@ -1,0 +1,22 @@
+@use 'app/design/typography' as type;
+
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+p {
+  @include type.body;
+  margin: 0;
+}
+
+strong {
+  font-weight: 600;
+}
+
+// The narrative can run to several paragraphs, so it reads a little smaller.
+:host(.context) p {
+  font-size: var(--fs-body-sm);
+  opacity: 0.9;
+}

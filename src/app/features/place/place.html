@@ -7,14 +7,12 @@
     />
 
     <div class="body">
-      <p class="intro">{{ p.introText }}</p>
+      <app-rich-text [paragraphs]="p.introText" />
 
-      @if (story().length) {
+      @if (p.contextText.length) {
         <div class="story">
           <p class="eyebrow-sm">El relat</p>
-          @for (paragraph of story(); track $index) {
-            <p class="context">{{ paragraph }}</p>
-          }
+          <app-rich-text variant="context" [paragraphs]="p.contextText" />
         </div>
       }
 

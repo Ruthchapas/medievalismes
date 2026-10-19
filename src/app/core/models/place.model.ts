@@ -1,3 +1,5 @@
+import { RichText } from './rich-text';
+
 export type PlaceIconType = 'castell' | 'esglesia' | 'mirador' | 'sender';
 
 export interface PlaceHighlight {
@@ -24,11 +26,10 @@ export interface Place {
   photoUrl?: string;
   /** Short one-liner for list/grid cards — distinct from introText. */
   teaser?: string;
-  introText: string;
-  contextText: string;
+  introText: RichText;
+  /** "El relat": one or more paragraphs. */
+  contextText: RichText;
   highlights: PlaceHighlight[];
   /** Original image URLs; each use (thumbnail, full screen) asks for the size it needs. */
   gallery: string[];
-  /** Slugs of nearby places; distances are worked out from the coordinates. */
-  nearby: string[];
 }

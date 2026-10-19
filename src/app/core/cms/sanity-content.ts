@@ -1,6 +1,7 @@
 import { createClient } from '@sanity/client';
 import { Collection } from '../models/collection.model';
 import { Place, PlaceHighlight, PlaceIconType } from '../models/place.model';
+import { toRichText } from '../models/rich-text';
 import { CMS } from './cms.config';
 import { resized } from './image';
 
@@ -14,8 +15,7 @@ const PLACES_QUERY = `*[_type == "place" && defined(slug.current) && defined(lat
   name, comarca, regio, habitants, altitud, lat, lng, routeTag, teaser, introText, contextText,
   "photoUrl": photo.asset->url,
   "highlights": highlights[]{ icon, name, label, lat, lng },
-  "gallery": gallery[].asset->url,
-  "nearby": nearby[]->slug.current
+  "gallery": gallery[].asset->url
 }`;
 
 const COLLECTIONS_QUERY = `*[_type == "collection" && defined(slug.current)] | order(title asc) {
@@ -36,12 +36,12 @@ interface RawPlace {
   lng: number;
   routeTag: string | null;
   teaser: string | null;
-  introText: string | null;
-  contextText: string | null;
+  // Block content from the Studio, or a plain string in content saved before text could be formatted.
+  introText: unknown;
+  contextText: unknown;
   photoUrl: string | null;
   highlights: { icon: string | null; name: string; label: string | null; lat: number | null; lng: number | null }[] | null;
   gallery: (string | null)[] | null;
-  nearby: (string | null)[] | null;
 }
 
 interface RawCollection {
@@ -81,11 +81,10 @@ function toPlace(raw: RawPlace): Place {
     routeTag: raw.routeTag ?? undefined,
     teaser: raw.teaser ?? undefined,
     photoUrl: raw.photoUrl ? resized(raw.photoUrl, 1600) : undefined,
-    introText: raw.introText ?? '',
-    contextText: raw.contextText ?? '',
+    introText: toRichText(raw.introText),
+    contextText: toRichText(raw.contextText),
     highlights: (raw.highlights ?? []).map(toHighlight),
     gallery: (raw.gallery ?? []).filter(isString),
-    nearby: (raw.nearby ?? []).filter(isString),
   };
 }
 
