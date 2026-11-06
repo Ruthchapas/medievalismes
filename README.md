@@ -1,59 +1,70 @@
 # Medievalismes
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.24.
+Aplicación web para descubrir el patrimonio medieval de Cataluña: un mapa con pueblos, iglesias, castillos y miradores, y una ficha por cada lugar con su historia, sus puntos destacados y su galería de fotos.
 
-## Development server
+**Demo:** [medievalismes.netlify.app](https://medievalismes.netlify.app) (pensada para móvil; el contenido está en catalán).
 
-To start a local development server, run:
+<p align="center">
+  <img src="docs/mapa.jpg" alt="Mapa de Medievalismes con los lugares marcados" width="280">
+  &nbsp;&nbsp;
+  <img src="docs/lloc.jpg" alt="Ficha de Rupit con foto y texto" width="280">
+</p>
 
-```bash
-ng serve
-```
+## Qué hace
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- **Mapa interactivo** de lugares y, al acercarse a un pueblo, de sus puntos destacados (iglesias, castillos, miradores, senderos).
+- **Fichas de lugar** con introducción, relato, puntos destacados desplegables, galería a pantalla completa, botón de compartir y **lugares cercanos** calculados a partir de las coordenadas.
+- **Búsqueda con autocompletado** y filtros, y **colecciones temáticas** (por ejemplo, iglesias románicas del Collsacabra).
+- **Lugares guardados**: se guardan en el dispositivo y, si la persona inicia sesión (con Google o con un enlace por correo, sin contraseñas), se sincronizan entre dispositivos. Iniciar sesión es opcional: toda la app funciona sin cuenta.
+- **Contenido gestionado desde un CMS**, para que quien escribe los textos pueda editarlos sin tocar el código.
+- Sin analítica ni cookies de seguimiento. Incluye página de privacidad.
 
-## Code scaffolding
+## Tecnología
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+| Parte | Con qué |
+| --- | --- |
+| App | Angular 21 (componentes standalone, signals, rutas con carga diferida) y TypeScript |
+| Mapa | MapLibre GL con mapas de OpenFreeMap / OpenStreetMap |
+| Contenido | Sanity (headless CMS); el Studio está en [`studio/`](studio) |
+| Cuentas y datos de usuario | Firebase Authentication y Firestore |
+| Despliegue | Netlify |
+| Pruebas | Vitest |
 
-```bash
-ng generate component component-name
-```
+## Decisiones de diseño
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+- **El contenido se carga antes de arrancar la app** (`provideAppInitializer`), así que el resto de componentes lo leen de forma síncrona. Si el CMS no responde o no tiene nada publicado, la app usa un contenido de muestra incluido en el código, y sigue funcionando.
+- **Las fotos se piden al tamaño que hace falta** (miniatura o pantalla completa) a través del CDN de Sanity, en lugar de descargar la imagen original siempre.
+- **Los textos admiten solo negrita y cursiva** en el Studio, para que todas las fichas mantengan el mismo aspecto.
+- **Reglas de Firestore estrictas** ([`firestore.rules`](firestore.rules)): cada persona solo puede leer y escribir su propio documento, y ese documento solo puede contener la lista de lugares guardados.
+- **Diseño propio con tokens** ([`src/app/design`](src/app/design)): colores, tipografía y espaciado definidos en un único sitio.
 
-```bash
-ng generate --help
-```
+## Cómo ejecutarlo
 
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+Necesitas Node 20.19 o superior (se despliega con Node 22).
 
 ```bash
-ng e2e
+npm install
+npm start
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+La app queda en `http://localhost:4200/`. Lee el contenido publicado de mi proyecto de Sanity, que es de lectura pública y no necesita ninguna clave.
 
-## Additional Resources
+Para abrir el Studio (edición de contenidos, requiere permisos en el proyecto de Sanity):
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+```bash
+cd studio
+npm install
+npm run dev
+```
+
+Para generar la versión de producción: `npm run build`.
+
+## Sobre el proyecto
+
+Proyecto personal. La idea, el diseño del producto y las decisiones son mías, y el código lo he desarrollado con asistencia de IA. Los textos y las fotografías de los lugares los aporta una cuenta de divulgación de historia del arte, con su permiso.
+
+El código se publica como muestra de portfolio. Los contenidos y las fotos pertenecen a sus autores y no están disponibles para su reutilización.
+
+---
+
+**Ruth Chavarrías Pascual** · Desarrolladora web junior · [ruthchavar.com](https://ruthchavar.com) · [LinkedIn](https://www.linkedin.com/in/ruthchavar)
