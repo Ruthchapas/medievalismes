@@ -4,5 +4,6 @@
  * URL is returned untouched.
  */
 export function resized(url: string, width: number): string {
-  return url.startsWith('https://cdn.sanity.io/') ? `${url}?w=${width}&auto=format` : url;
+  // Any size already asked for is replaced, so a URL can be resized again for a smaller use.
+  return url.startsWith('https://cdn.sanity.io/') ? `${url.split('?')[0]}?w=${width}&auto=format` : url;
 }

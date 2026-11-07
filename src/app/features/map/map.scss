@@ -44,6 +44,20 @@
   }
 }
 
+// The place card shows the cover photo where the highlight card shows its drawing.
+.place-card__photo {
+  width: 72px;
+  height: 72px;
+  flex-shrink: 0;
+  background-size: cover;
+  background-position: center;
+  border: 1px solid var(--color-ink);
+}
+
+.place-card .spot__link {
+  white-space: nowrap;
+}
+
 .spot__icon {
   width: 40px;
   height: 40px;

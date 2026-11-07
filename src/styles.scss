@@ -200,3 +200,61 @@ label {
   width: var(--tap);
   height: var(--tap);
 }
+
+
+// Preview shown over a pin when hovering it with a mouse (pointer devices only).
+.place-popup {
+  pointer-events: none;
+  z-index: 3;
+
+  .maplibregl-popup-content {
+    width: 230px;
+    padding: 0;
+    overflow: hidden;
+    background: var(--color-calc);
+    border: 1px solid var(--color-ink);
+    border-radius: 0;
+    box-shadow: 0 12px 28px rgba(59, 40, 30, 0.22);
+  }
+
+  .maplibregl-popup-tip {
+    display: none;
+  }
+}
+
+.place-preview__photo {
+  display: block;
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  background: linear-gradient(155deg, #e6d2a8, #b9793e);
+}
+
+.place-preview__text {
+  padding: var(--space-3) var(--space-4);
+}
+
+.place-preview__comarca {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-eyebrow);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-terracota-text);
+}
+
+.place-preview__name {
+  margin: 2px 0 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--fs-h3);
+  line-height: 1.3;
+  color: var(--color-ink);
+}
+
+.place-preview__hint {
+  margin: var(--space-2) 0 0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-meta);
+  color: var(--color-ink-soft);
+}

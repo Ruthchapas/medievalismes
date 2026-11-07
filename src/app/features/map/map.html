@@ -6,6 +6,22 @@
   <p class="empty" role="status">Cap lloc coincideix amb la cerca.</p>
 }
 
+@if (selectedPlace(); as place) {
+  <section class="spot place-card" aria-live="polite">
+    <div
+      class="place-card__photo"
+      [style.background-image]="place.photoUrl ? 'url(' + place.photoUrl + ')' : 'linear-gradient(155deg, #e6d2a8, #b9793e)'"
+      aria-hidden="true"
+    ></div>
+    <div class="spot__body">
+      <p class="spot__place">{{ place.comarca }}</p>
+      <h2 class="spot__name">{{ place.name }}</h2>
+      <a class="spot__link" [routerLink]="['/lloc', place.slug]">Veure la fitxa ›</a>
+    </div>
+    <button type="button" class="spot__close" aria-label="Tanca" (click)="selectedPlace.set(null)">×</button>
+  </section>
+}
+
 @if (selected(); as spot) {
   <section class="spot" aria-live="polite">
     <app-place-icon class="spot__icon" [type]="spot.icon" />

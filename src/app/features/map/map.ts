@@ -16,6 +16,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import * as maplibregl from 'maplibre-gl';
 import { map as mapOperator } from 'rxjs/operators';
+import { resized } from '../../core/cms/image';
 import { Place, PlaceHighlight, PlaceIconType } from '../../core/models/place.model';
 import { FilterService } from '../../core/services/filter.service';
 import { PlaceService } from '../../core/services/place.service';
@@ -27,6 +28,8 @@ import { PlaceIcon } from '../../shared/ui/place-icon/place-icon';
 const LABELS_MIN_ZOOM = 10.5;
 /** From this zoom you're in the village, so the highlighted spots appear. */
 const HIGHLIGHTS_MIN_ZOOM = 14.5;
+/** Space a hover preview needs beside its pin (card width plus the gap). */
+const PREVIEW_ROOM = 270;
 /** How close to go when sent to a single highlight. */
 const SPOT_ZOOM = 17;
 
@@ -36,6 +39,14 @@ interface SelectedHighlight {
   icon: PlaceIconType;
   placeName: string;
   placeSlug: string;
+}
+
+/** The place whose card is open (phones and tablets: tapping a pin opens a card instead of the fitxa). */
+interface SelectedPlace {
+  slug: string;
+  name: string;
+  comarca: string;
+  photoUrl?: string;
 }
 
 @Component({
@@ -57,6 +68,11 @@ export class Map {
 
   /** The highlight whose card is open. */
   protected readonly selected = signal<SelectedHighlight | null>(null);
+  protected readonly selectedPlace = signal<SelectedPlace | null>(null);
+
+  /** A real mouse: pins show a preview on hover and open the fitxa on click. Touch has no hover. */
+  private readonly hasHover = () => matchMedia('(hover: hover) and (pointer: fine)').matches;
+  private hoverPopup?: maplibregl.Popup;
 
   /**
    * `/mapa?lloc=rupit` opens the map framing that place and its highlights;
@@ -108,7 +124,7 @@ export class Map {
     }
 
     map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'bottom-right');
-    map.on('click', () => this.selected.set(null));
+    map.on('click', () => this.closeCards());
 
     const updateZoomState = () => {
       const zoom = map.getZoom();
@@ -121,7 +137,7 @@ export class Map {
 
     for (const place of this.placeService.getAll()) {
       const element = createPinElement(place.name);
-      element.addEventListener('click', () => this.router.navigate(['/lloc', place.slug]));
+      this.wirePin(element, place);
       new maplibregl.Marker({ element, anchor: 'bottom' }).setLngLat([place.lng, place.lat]).addTo(map);
       this.pins.set(place.slug, { element, lngLat: [place.lng, place.lat] });
 
@@ -142,6 +158,7 @@ export class Map {
 
     this.syncPins(this.filters.places().map((place) => place.slug));
     this.destroyRef.onDestroy(() => {
+      this.hoverPopup?.remove();
       for (const ref of this.iconRefs) ref.destroy();
       map.remove();
     });
@@ -179,7 +196,97 @@ export class Map {
   private readonly focusPadding = { top: 170, bottom: 230, left: 90, right: 90 };
   private readonly spotPadding = { top: 120, bottom: 260, left: 40, right: 40 };
 
+  protected closeCards(): void {
+    this.selected.set(null);
+    this.selectedPlace.set(null);
+  }
+
+  /**
+   * With a mouse, hovering a pin previews the place and clicking opens its fitxa. On touch screens there
+   * is no hover, so tapping opens a card with the cover photo and a button to the fitxa.
+   */
+  private wirePin(element: HTMLElement, place: Place): void {
+    const hover = this.hasHover();
+
+    if (hover) {
+      const show = () => this.showPreview(place);
+      const hide = () => this.hoverPopup?.remove();
+      element.addEventListener('mouseenter', show);
+      element.addEventListener('mouseleave', hide);
+      element.addEventListener('focus', show);
+      element.addEventListener('blur', hide);
+    }
+
+    element.addEventListener('click', (event) => {
+      if (hover) {
+        this.router.navigate(['/lloc', place.slug]);
+        return;
+      }
+      // Otherwise the tap would also reach the map and close the card straight away.
+      event.stopPropagation();
+      this.showPlaceCard(place);
+    });
+  }
+
+  private showPlaceCard(place: Place): void {
+    this.selected.set(null);
+    this.selectedPlace.set({
+      slug: place.slug,
+      name: place.name,
+      comarca: place.comarca,
+      photoUrl: place.photoUrl ? resized(place.photoUrl, 400) : undefined,
+    });
+    // Brings the pin clear of the card.
+    this.map?.easeTo({ center: [place.lng, place.lat], padding: this.spotPadding, duration: 500 });
+  }
+
+  private showPreview(place: Place): void {
+    if (!this.map) return;
+    this.hoverPopup?.remove();
+
+    // Opens to the right of the pin when there is room for it, otherwise to the left.
+    const container = this.map.getContainer();
+    const point = this.map.project([place.lng, place.lat]);
+    const side = container.clientWidth - point.x >= PREVIEW_ROOM ? 'left' : 'right';
+    const vertical = point.y < 240 ? 'top-' : point.y > container.clientHeight - 240 ? 'bottom-' : '';
+    const dx = side === 'right' ? -22 : 22;
+    this.hoverPopup = new maplibregl.Popup({
+      closeButton: false,
+      closeOnClick: false,
+      anchor: `${vertical}${side}` as maplibregl.PositionAnchor,
+      offset: [dx, vertical === 'top-' ? 10 : vertical === 'bottom-' ? -34 : -22],
+      maxWidth: '240px',
+      className: 'place-popup',
+    });
+
+    const card = document.createElement('div');
+    card.className = 'place-preview';
+    if (place.photoUrl) {
+      const image = document.createElement('img');
+      image.className = 'place-preview__photo';
+      image.src = resized(place.photoUrl, 480);
+      image.alt = '';
+      card.append(image);
+    }
+    const text = document.createElement('div');
+    text.className = 'place-preview__text';
+    const comarca = document.createElement('p');
+    comarca.className = 'place-preview__comarca';
+    comarca.textContent = place.comarca;
+    const name = document.createElement('p');
+    name.className = 'place-preview__name';
+    name.textContent = place.name;
+    const hint = document.createElement('p');
+    hint.className = 'place-preview__hint';
+    hint.textContent = 'Clica per veure la fitxa';
+    text.append(comarca, name, hint);
+    card.append(text);
+
+    this.hoverPopup.setLngLat([place.lng, place.lat]).setDOMContent(card).addTo(this.map);
+  }
+
   private showHighlight(place: Place, highlight: PlaceHighlight): void {
+    this.selectedPlace.set(null);
     this.selected.set({
       name: highlight.name,
       label: highlight.label,
@@ -231,7 +338,7 @@ export class Map {
 
     const bounds = this.boundsAround(slug);
     if (!this.map || !bounds) return;
-    this.selected.set(null);
+    this.closeCards();
     this.map.fitBounds(bounds, { padding: this.focusPadding, maxZoom: 16.5, duration: 900 });
   }
 
@@ -241,6 +348,7 @@ export class Map {
 
     const visible = new Set(visibleSlugs);
     const bounds = new maplibregl.LngLatBounds();
+    if (this.selectedPlace() && !visible.has(this.selectedPlace()!.slug)) this.selectedPlace.set(null);
 
     for (const [slug, pin] of this.pins) {
       const isVisible = visible.has(slug);
